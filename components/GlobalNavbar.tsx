@@ -23,6 +23,9 @@ export default function GlobalNavbar() {
           <a href="/home" className="hover:underline">Home</a>
           <a href="/about" className="hover:underline">About</a>
           <a href="/project" className="hover:underline">Project</a>
+          <a href="/skill" className="hover:underline">Skill</a>
+          <a href="/blog" className="hover:underline">Blog</a>
+          <a href="/review" className="hover:underline">Revieuw</a>
           <a href="/contact" className="hover:underline">Contact</a>
           <a href="/login" className="hover:underline">Login</a>
         </nav>

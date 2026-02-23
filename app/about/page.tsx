@@ -11,6 +11,15 @@ export default function AboutPage() {
         <li>Professional team</li>
         <li>Customer satisfaction</li>
       </ul>
+      
+      <p>Hello!</p>
+      <p>
+My name is Sam Wauters. I'm a student at AP University Antwerpen.
+
+In my work, I focus on presenting information clearly and logically. Whether it's digital projects, texts, or document structures, I strive to make complex content clear and accessible to the user.
+
+This portfolio showcases my projects and my development as a student. It provides insight into my way of thinking, working, and improving, with attention to detail and a critical eye for quality and user experience.
+</p>
     </div>
   )
 }
