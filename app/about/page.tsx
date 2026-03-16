@@ -1,25 +1,38 @@
-export default function AboutPage() {
+"use client";
+
+export default function About() {
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">About Us</h1>
-      <p className="text-gray-700">
-        We are a company dedicated to providing the best solutions for your needs. 
-        Our team is passionate about creating modern, scalable, and user-friendly applications.
-      </p>
-      <ul className="list-disc pl-5 text-gray-700 space-y-2">
-        <li>Innovative technology</li>
-        <li>Professional team</li>
-        <li>Customer satisfaction</li>
-      </ul>
-      
-      <p>Hello!</p>
-      <p>
-My name is Sam Wauters. I'm a student at AP University Antwerpen.
+    <section className="min-h-screen flex justify-center px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24">
+      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start animate-in fade-in slide-in-from-bottom duration-700">
 
-In my work, I focus on presenting information clearly and logically. Whether it's digital projects, texts, or document structures, I strive to make complex content clear and accessible to the user.
+        {/* Linker kolom */}
+        <div className="text-left">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 sm:mb-6">
+            Over Mij
+          </h1>
 
-This portfolio showcases my projects and my development as a student. It provides insight into my way of thinking, working, and improving, with attention to detail and a critical eye for quality and user experience.
-</p>
-    </div>
-  )
+          <h2 className="text-xl sm:text-2xl font-semibold text-primary mb-4 sm:mb-6">
+            Creatieve ontwikkelaar met oog voor detail
+          </h2>
+
+          <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+            Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. 
+            Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. 
+            Praesent mauris. Fusce nec tellus sed augue semper porta.
+          </p>
+        </div>
+
+        {/* Rechter kolom */}
+        <div className="flex justify-center md:justify-end mt-8 md:mt-0">
+          <img
+            src="/about-image.jpg"
+            alt="About afbeelding"
+            className="rounded-3xl shadow-2xl max-w-xs sm:max-w-sm md:max-w-md w-full object-cover"
+          />
+        </div>
+
+      </div>
+    </section>
+  );
 }

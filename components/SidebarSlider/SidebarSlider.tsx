@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X } from "lucide-react" // For close icon
-import { GiHamburgerMenu } from "react-icons/gi" // For hamburger icon
+import { X } from "lucide-react"
+import { GiHamburgerMenu } from "react-icons/gi"
 
 interface SidebarSliderProps {
   isOpen: boolean
@@ -15,7 +15,7 @@ export function SidebarToggle({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="p-2 text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      className="p-2 text-foreground hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring rounded"
     >
       <GiHamburgerMenu size={24} />
     </button>
@@ -42,11 +42,11 @@ export default function SidebarSlider({ isOpen, onClose, children }: SidebarSlid
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 p-4"
+            className="fixed top-0 left-0 h-full w-64 bg-card text-card-foreground shadow-lg z-50 p-4 border-r border-border"
           >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Menu</h2>
-              <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded">
+              <h2 className="text-xl font-semibold text-foreground">Menu</h2>
+              <button onClick={onClose} className="p-2 hover:bg-muted rounded text-foreground">
                 <X size={24} />
               </button>
             </div>
