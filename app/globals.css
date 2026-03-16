@@ -76,37 +76,6 @@
   --ring: #7217E8;
 
   /* Sidebar specific */
-  --sidebar: #2A2D3A; /* dark background */
-  --sidebar-foreground: #E8ECED; /* light text */
-  --sidebar-accent: #7217E8; /* purple hover/click */
-  --sidebar-accent-foreground: #E8ECED; /* text on hover/click */
-}
-
-/* -----------------------------
-   Dark Mode Overrides
-------------------------------- */
-.dark {
-  --background: #1E202C;
-  --foreground: #E8ECED;
-  --accent: #7217E8;
-  --accent-foreground: #E8ECED;
-
-  --card: #2A2D3A;
-  --card-foreground: #E8ECED;
-  --popover: #2A2D3A;
-  --popover-foreground: #E8ECED;
-  --primary: #7217E8;
-  --primary-foreground: #E8ECED;
-  --secondary: #3A3D50;
-  --secondary-foreground: #E8ECED;
-  --muted: #3A3D50;
-  --muted-foreground: #E8ECED;
-  --destructive: #E63946;
-  --border: #3A3D50;
-  --input: #2A2D3A;
-  --ring: #7217E8;
-
-  /* Sidebar dark mode */
   --sidebar: #2A2D3A;
   --sidebar-foreground: #E8ECED;
   --sidebar-accent: #7217E8;
@@ -123,6 +92,11 @@
 
   body {
     @apply bg-background text-foreground font-sans;
+  }
+
+  input, textarea, select {
+    color: #E8ECED !important;
+    background-color: #2A2D3A !important;
   }
 
   /* -----------------------------
@@ -159,4 +133,19 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.8s ease-out forwards;
+}
+.bg-gray-50 {
+  background-color: #2A2D3A !important;
+}
+
+.bg-gray-100 {
+  background-color: #2A2D3A !important;
+}
+
+.bg-gray-200 {
+  background-color: #3A3D50 !important;
+}
+
+.bg-yellow-50 {
+  background-color: #3a2e1a !important;
 }

@@ -21,7 +21,7 @@ export default function GlobalNavbar() {
       {/* SidebarSlider */}
       <SidebarSlider isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}>
         <nav className="flex flex-col space-y-2">
-          <Link href="/home" className="text-foreground hover:text-primary hover:underline py-1">Home</Link>
+          <Link href="/" className="text-foreground hover:text-primary hover:underline py-1">Home</Link>
           <Link href="/about" className="text-foreground hover:text-primary hover:underline py-1">About</Link>
           <Link href="/project-1" className="text-foreground hover:text-primary hover:underline py-1">Project 1</Link>
           <Link href="/project-2" className="text-foreground hover:text-primary hover:underline py-1">Project 2</Link>

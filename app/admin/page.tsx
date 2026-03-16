@@ -1,285 +1,314 @@
 "use client";
 
 import { useState } from "react";
+import { AiOutlineWarning } from "react-icons/ai";
+import { FiFileText, FiEdit2, FiCheck } from "react-icons/fi";
 
-export default function Projects() {
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      title: "Project 1",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.",
-      image: "/project1.jpg",
-    },
-    {
-      id: 2,
-      title: "Project 2",
-      description:
-        "Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem.",
-      image: "/project2.jpg",
-    },
-    {
-      id: 3,
-      title: "Project 3",
-      description:
-        "Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.",
-      image: "/project3.jpg",
-    },
-    {
-      id: 4,
-      title: "Project 4",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.",
-      image: "/project4.jpg",
-    },
+export default function AdminPage() {
+  const [users, setUsers] = useState([
+    { id: 1, naam: "Jan Jansen", rol: "gebruiker", actief: true },
+    { id: 2, naam: "Sara Peeters", rol: "editor", actief: true },
+    { id: 3, naam: "Tom Claes", rol: "admin", actief: true },
   ]);
 
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [search, setSearch] = useState("");
   const [editMode, setEditMode] = useState(false);
+
+  // Editable content state
+  const [aantalGebruikers, setAantalGebruikers] = useState("1,234");
+  const [actieveSessies, setActieveSessies] = useState("87");
+  const [activiteiten, setActiviteiten] = useState([
+    "Jan Jansen ingelogd",
+    "Sara Peeters artikel gepubliceerd",
+    "Nieuwe gebruiker geregistreerd",
+  ]);
+  const [alertText, setAlertText] = useState("Alert: Systeemfout bij laatste backup");
+
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [editedUser, setEditedUser] = useState(null);
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedProject((prev) => ({ ...prev, [name]: value }));
+  const filteredUsers = users.filter((u) =>
+    u.naam.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleEdit = (user) => {
+    setSelectedUser(user);
+    setEditedUser({ ...user });
+    setErrors({});
   };
 
-  const validate = () => {
+  const handleUserChange = (e) => {
+    const { name, value } = e.target;
+    setEditedUser((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateUser = () => {
     const newErrors = {};
-    if (!selectedProject.title || selectedProject.title.trim().length < 3) {
-      newErrors.title = "Titel moet minstens 3 karakters bevatten.";
-    }
-    if (
-      !selectedProject.description ||
-      selectedProject.description.trim().length < 10
-    ) {
-      newErrors.description =
-        "Beschrijving moet minstens 10 karakters bevatten.";
-    }
-    if (!selectedProject.image) {
-      newErrors.image = "Afbeelding URL is verplicht.";
-    } else if (!/^https?:\/\/.+|\/.+/.test(selectedProject.image)) {
-      newErrors.image = "Voer een geldige URL of pad in.";
-    }
+    if (!editedUser.naam || editedUser.naam.trim().length < 2)
+      newErrors.naam = "Naam moet minstens 2 karakters bevatten.";
+    if (!editedUser.rol) newErrors.rol = "Rol is verplicht.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = () => {
-    if (!validate()) return;
-
-    setProjects((prev) =>
-      prev.map((project) =>
-        project.id === selectedProject.id ? selectedProject : project
-      )
-    );
-    setEditMode(false);
-    setSelectedProject(null);
+  const handleUserSave = () => {
+    if (!validateUser()) return;
+    setUsers((prev) => prev.map((u) => (u.id === editedUser.id ? editedUser : u)));
+    setSelectedUser(null);
+    setEditedUser(null);
     setErrors({});
   };
 
+  const updateActiviteit = (index, value) => {
+    setActiviteiten((prev) => prev.map((a, i) => (i === index ? value : a)));
+  };
+
   return (
-    <>
-      <section className="min-h-screen flex justify-center px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24">
-        <div className="w-full max-w-6xl">
-          {/* Survey Button */}
-          <div className="flex justify-center mb-8 relative">
-            <a
-              href="https://forms.gle/your-survey-link-here"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group px-6 py-3 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition relative z-10"
-            >
-              Neem deel aan de enquête
-              {/* Tooltip */}
-              <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-sm rounded py-1 px-3 whitespace-nowrap z-20 pointer-events-none">
-                Deze enquête gaat over uw mening over de projecten.
-              </span>
-            </a>
-          </div>
+    <div className="max-w-7xl mx-auto p-6 space-y-10">
 
-          <h1 className="text-4xl sm:text-5xl font-extrabold mb-12 text-center">
-            Projecten
-          </h1>
+      {/* Title + Edit toggle button */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <button
+          onClick={() => setEditMode((prev) => !prev)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            backgroundColor: editMode ? "#16a34a" : "#7217E8",
+            color: "#E8ECED",
+            padding: "10px 20px",
+            borderRadius: "0.75rem",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            border: "none",
+            cursor: "pointer",
+            boxShadow: editMode
+              ? "0 4px 14px rgba(22,163,74,0.4)"
+              : "0 4px 14px rgba(114,23,232,0.45)",
+            transition: "background-color 0.2s ease, box-shadow 0.2s ease",
+          }}
+        >
+          {editMode ? <FiCheck size={16} /> : <FiEdit2 size={16} />}
+          {editMode ? "Opslaan" : "Bewerken"}
+        </button>
+      </div>
 
-          {/* Project Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
-            {projects.map((project) => (
-              <div
-                key={project.id}
-                onClick={() => {
-                  setSelectedProject(project);
-                  setEditMode(false);
-                }}
-                className="cursor-pointer bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
-              >
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-56 object-cover"
-                />
-                <div className="p-6 flex flex-col gap-4">
-                  <h2 className="text-2xl font-semibold">{project.title}</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {project.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+      {/* 1. Dashboard / Overzicht */}
+      <section className="p-6 border rounded shadow-md space-y-4">
+        <h2 className="text-2xl font-semibold">Dashboard / Overzicht</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-4 border rounded bg-gray-50">
+            <p className="text-gray-500">Aantal gebruikers</p>
+            {editMode ? (
+              <input
+                value={aantalGebruikers}
+                onChange={(e) => setAantalGebruikers(e.target.value)}
+                className="text-2xl font-bold w-full border-b border-primary bg-transparent outline-none"
+              />
+            ) : (
+              <p className="text-2xl font-bold">{aantalGebruikers}</p>
+            )}
           </div>
+          <div className="p-4 border rounded bg-gray-50">
+            <p className="text-gray-500">Actieve sessies</p>
+            {editMode ? (
+              <input
+                value={actieveSessies}
+                onChange={(e) => setActieveSessies(e.target.value)}
+                className="text-2xl font-bold w-full border-b border-primary bg-transparent outline-none"
+              />
+            ) : (
+              <p className="text-2xl font-bold">{actieveSessies}</p>
+            )}
+          </div>
+          <div className="p-4 border rounded bg-gray-50">
+            <p className="text-gray-500">Recente activiteiten</p>
+            <ul className="list-disc ml-5 space-y-1">
+              {activiteiten.map((a, i) =>
+                editMode ? (
+                  <input
+                    key={i}
+                    value={a}
+                    onChange={(e) => updateActiviteit(i, e.target.value)}
+                    className="w-full border-b border-primary bg-transparent outline-none text-sm"
+                  />
+                ) : (
+                  <li key={i}>{a}</li>
+                )
+              )}
+            </ul>
+          </div>
+        </div>
+        <div className="mt-4 p-4 border rounded bg-yellow-50 flex items-center space-x-2">
+          <AiOutlineWarning className="text-yellow-600 shrink-0" />
+          {editMode ? (
+            <input
+              value={alertText}
+              onChange={(e) => setAlertText(e.target.value)}
+              className="w-full border-b border-yellow-500 bg-transparent outline-none"
+            />
+          ) : (
+            <p>{alertText}</p>
+          )}
         </div>
       </section>
 
-      {/* Modal */}
-      {selectedProject && (
+      {/* 2. Gebruikersbeheer */}
+      <section className="p-6 border rounded shadow-md space-y-4">
+        <h2 className="text-2xl font-semibold">Gebruikersbeheer</h2>
+        <input
+          type="text"
+          placeholder="Zoek gebruiker..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full border rounded px-2 py-1"
+        />
+        <table className="w-full text-left border-collapse mt-2">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="p-2 border">Naam</th>
+              <th className="p-2 border">Rol</th>
+              <th className="p-2 border">Actief</th>
+              <th className="p-2 border">Acties</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.map((u) => (
+              <tr key={u.id} className="hover:bg-gray-50">
+                <td className="p-2 border">{u.naam}</td>
+                <td className="p-2 border">{u.rol}</td>
+                <td className="p-2 border">{u.actief ? "Ja" : "Nee"}</td>
+                <td className="p-2 border space-x-2">
+                  <button
+                    onClick={() => handleEdit(u)}
+                    className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                  >
+                    Bewerken
+                  </button>
+                  <button className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Reset wachtwoord
+                  </button>
+                  <button className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                    Blokkeren
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      {/* 3. Contentbeheer */}
+      <section className="p-6 border rounded shadow-md space-y-4">
+        <h2 className="text-2xl font-semibold">Contentbeheer</h2>
+        <div className="flex flex-col md:flex-row gap-4">
+          <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+            <FiFileText /> <span>Nieuw artikel</span>
+          </button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Media beheren</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Categorieën & tags</button>
+        </div>
+      </section>
+
+      {/* 4. Instellingen / Configuratie */}
+      <section className="p-6 border rounded shadow-md space-y-4">
+        <h2 className="text-2xl font-semibold">Instellingen / Configuratie</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Site-instellingen</p><p>Naam, logo, contactgegevens</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">E-mail templates</p><p>Notificaties instellen</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Integraties</p><p>API-sleutels, externe tools</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Betalingsinstellingen</p><p>Abonnementen beheren</p></div>
+        </div>
+      </section>
+
+      {/* 5. Beveiliging & Toegang */}
+      <section className="p-6 border rounded shadow-md space-y-4">
+        <h2 className="text-2xl font-semibold">Beveiliging & Toegang</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Rollen & permissies</p><p>Per sectie instellen</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Twee-factor-authenticatie</p><p>Verplicht voor beheerders</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Audit log</p><p>Overzicht van admin-activiteiten</p></div>
+        </div>
+      </section>
+
+      {/* 6. Data en rapportages */}
+      <section className="p-6 border rounded shadow-md space-y-4">
+        <h2 className="text-2xl font-semibold">Data en rapportages</h2>
+        <div className="flex flex-col md:flex-row gap-4">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Export gebruikersdata</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Grafieken & rapporten</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Backups maken/herstellen</button>
+        </div>
+      </section>
+
+      {/* 7. Functies voor efficiency */}
+      <section className="p-6 border rounded shadow-md space-y-4">
+        <h2 className="text-2xl font-semibold">Functies voor efficiency</h2>
+        <div className="flex flex-col md:flex-row gap-4">
+          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Bulk acties</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Zoeken & filteren</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Notificaties</button>
+        </div>
+      </section>
+
+      {/* Edit User Modal */}
+      {selectedUser && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-6">
-          <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden">
-
-            {/* Detail view */}
-            {!editMode ? (
-              <>
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="w-full h-72 object-cover"
-                />
-                <div className="p-8">
-                  <h2 className="text-3xl font-bold mb-4">
-                    {selectedProject.title}
-                  </h2>
-                  <p className="text-muted-foreground mb-6">
-                    {selectedProject.description}
-                  </p>
-                  <div className="flex gap-4">
-                    <button
-                      onClick={() => setEditMode(true)}
-                      className="px-6 py-2 rounded-xl bg-yellow-500 text-white hover:opacity-90 transition"
-                    >
-                      Bewerken
-                    </button>
-                    <button
-                      onClick={() => {
-                        setSelectedProject(null);
-                        setErrors({});
-                      }}
-                      className="px-6 py-2 rounded-xl bg-gray-600 text-white hover:opacity-90 transition"
-                    >
-                      Sluiten
-                    </button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              /* Edit Form */
-              <div className="p-8">
-                <h2 className="text-3xl font-bold mb-6">Project Bewerken</h2>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSave();
-                  }}
-                  className="space-y-6"
-                >
-                  {/* Title */}
-                  <div>
-                    <label className="block mb-2 font-medium">Titel</label>
-                    <input
-                      type="text"
-                      name="title"
-                      value={selectedProject.title}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-2 rounded-xl border transition ${
-                        errors.title
-                          ? "border-red-500 animate-pulse"
-                          : "border-gray-300"
-                      } focus:outline-none focus:ring-2 ${
-                        errors.title
-                          ? "focus:ring-red-500"
-                          : "focus:ring-blue-500"
-                      }`}
-                    />
-                    {errors.title && (
-                      <p className="text-red-500 text-sm mt-2 animate-pulse">
-                        {errors.title}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Description */}
-                  <div>
-                    <label className="block mb-2 font-medium">
-                      Beschrijving
-                    </label>
-                    <textarea
-                      name="description"
-                      rows="4"
-                      value={selectedProject.description}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-2 rounded-xl border transition ${
-                        errors.description
-                          ? "border-red-500 animate-pulse"
-                          : "border-gray-300"
-                      } focus:outline-none focus:ring-2 ${
-                        errors.description
-                          ? "focus:ring-red-500"
-                          : "focus:ring-blue-500"
-                      }`}
-                    />
-                    {errors.description && (
-                      <p className="text-red-500 text-sm mt-2 animate-pulse">
-                        {errors.description}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Image */}
-                  <div>
-                    <label className="block mb-2 font-medium">
-                      Afbeelding URL
-                    </label>
-                    <input
-                      type="text"
-                      name="image"
-                      value={selectedProject.image}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-2 rounded-xl border transition ${
-                        errors.image
-                          ? "border-red-500 animate-pulse"
-                          : "border-gray-300"
-                      } focus:outline-none focus:ring-2 ${
-                        errors.image
-                          ? "focus:ring-red-500"
-                          : "focus:ring-blue-500"
-                      }`}
-                    />
-                    {errors.image && (
-                      <p className="text-red-500 text-sm mt-2 animate-pulse">
-                        {errors.image}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex gap-4">
-                    <button
-                      type="submit"
-                      className="px-6 py-2 rounded-xl bg-green-600 text-white hover:opacity-90 transition"
-                    >
-                      Opslaan
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setEditMode(false)}
-                      className="px-6 py-2 rounded-xl bg-gray-500 text-white hover:opacity-90 transition"
-                    >
-                      Annuleren
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
-
+          <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-4">
+            <h2 className="text-2xl font-bold">Gebruiker bewerken</h2>
+            <div>
+              <label className="block text-sm font-medium mb-1">Naam</label>
+              <input
+                name="naam"
+                value={editedUser.naam}
+                onChange={handleUserChange}
+                className="w-full border rounded-xl px-4 py-2"
+              />
+              {errors.naam && <p className="text-red-500 text-sm mt-1">{errors.naam}</p>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Rol</label>
+              <select
+                name="rol"
+                value={editedUser.rol}
+                onChange={handleUserChange}
+                className="w-full border rounded-xl px-4 py-2"
+              >
+                <option value="gebruiker">Gebruiker</option>
+                <option value="editor">Editor</option>
+                <option value="admin">Admin</option>
+              </select>
+              {errors.rol && <p className="text-red-500 text-sm mt-1">{errors.rol}</p>}
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="actief"
+                checked={editedUser.actief}
+                onChange={(e) => setEditedUser((prev) => ({ ...prev, actief: e.target.checked }))}
+              />
+              <label htmlFor="actief" className="text-sm font-medium">Actief</label>
+            </div>
+            <div className="flex gap-4 pt-2">
+              <button
+                onClick={handleUserSave}
+                className="px-6 py-2 rounded-xl bg-green-600 text-white hover:opacity-90 transition"
+              >
+                Opslaan
+              </button>
+              <button
+                onClick={() => { setSelectedUser(null); setErrors({}); }}
+                className="px-6 py-2 rounded-xl bg-gray-600 text-white hover:opacity-90 transition"
+              >
+                Annuleren
+              </button>
+            </div>
           </div>
         </div>
       )}
-    </>
+
+    </div>
   );
 }
