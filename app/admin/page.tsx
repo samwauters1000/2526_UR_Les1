@@ -4,8 +4,20 @@ import { useState } from "react";
 import { AiOutlineWarning } from "react-icons/ai";
 import { FiFileText, FiEdit2, FiCheck } from "react-icons/fi";
 
+type User = {
+  id: number;
+  naam: string;
+  rol: string;
+  actief: boolean;
+};
+
+type Errors = {
+  naam?: string;
+  rol?: string;
+};
+
 export default function AdminPage() {
-  const [users, setUsers] = useState([
+  const [users, setUsers] = useState<User[]>([
     { id: 1, naam: "Jan Jansen", rol: "gebruiker", actief: true },
     { id: 2, naam: "Sara Peeters", rol: "editor", actief: true },
     { id: 3, naam: "Tom Claes", rol: "admin", actief: true },
@@ -14,7 +26,6 @@ export default function AdminPage() {
   const [search, setSearch] = useState("");
   const [editMode, setEditMode] = useState(false);
 
-  // Editable content state
   const [aantalGebruikers, setAantalGebruikers] = useState("1,234");
   const [actieveSessies, setActieveSessies] = useState("87");
   const [activiteiten, setActiviteiten] = useState([
@@ -24,43 +35,43 @@ export default function AdminPage() {
   ]);
   const [alertText, setAlertText] = useState("Alert: Systeemfout bij laatste backup");
 
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [editedUser, setEditedUser] = useState(null);
-  const [errors, setErrors] = useState({});
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [editedUser, setEditedUser] = useState<User | null>(null);
+  const [errors, setErrors] = useState<Errors>({});
 
   const filteredUsers = users.filter((u) =>
     u.naam.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleEdit = (user) => {
+  const handleEdit = (user: User) => {
     setSelectedUser(user);
     setEditedUser({ ...user });
     setErrors({});
   };
 
-  const handleUserChange = (e) => {
+  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setEditedUser((prev) => ({ ...prev, [name]: value }));
+    setEditedUser((prev) => prev ? { ...prev, [name]: value } : prev);
   };
 
   const validateUser = () => {
-    const newErrors = {};
-    if (!editedUser.naam || editedUser.naam.trim().length < 2)
+    const newErrors: Errors = {};
+    if (!editedUser?.naam || editedUser.naam.trim().length < 2)
       newErrors.naam = "Naam moet minstens 2 karakters bevatten.";
-    if (!editedUser.rol) newErrors.rol = "Rol is verplicht.";
+    if (!editedUser?.rol) newErrors.rol = "Rol is verplicht.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleUserSave = () => {
-    if (!validateUser()) return;
+    if (!validateUser() || !editedUser) return;
     setUsers((prev) => prev.map((u) => (u.id === editedUser.id ? editedUser : u)));
     setSelectedUser(null);
     setEditedUser(null);
     setErrors({});
   };
 
-  const updateActiviteit = (index, value) => {
+  const updateActiviteit = (index: number, value: string) => {
     setActiviteiten((prev) => prev.map((a, i) => (i === index ? value : a)));
   };
 
@@ -181,10 +192,7 @@ export default function AdminPage() {
                 <td className="p-2 border">{u.rol}</td>
                 <td className="p-2 border">{u.actief ? "Ja" : "Nee"}</td>
                 <td className="p-2 border space-x-2">
-                  <button
-                    onClick={() => handleEdit(u)}
-                    className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                  >
+                  <button onClick={() => handleEdit(u)} className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
                     Bewerken
                   </button>
                   <button className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -254,7 +262,7 @@ export default function AdminPage() {
       </section>
 
       {/* Edit User Modal */}
-      {selectedUser && (
+      {selectedUser && editedUser && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-6">
           <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-4">
             <h2 className="text-2xl font-bold">Gebruiker bewerken</h2>
@@ -287,21 +295,15 @@ export default function AdminPage() {
                 type="checkbox"
                 id="actief"
                 checked={editedUser.actief}
-                onChange={(e) => setEditedUser((prev) => ({ ...prev, actief: e.target.checked }))}
+                onChange={(e) => setEditedUser((prev) => prev ? { ...prev, actief: e.target.checked } : prev)}
               />
               <label htmlFor="actief" className="text-sm font-medium">Actief</label>
             </div>
             <div className="flex gap-4 pt-2">
-              <button
-                onClick={handleUserSave}
-                className="px-6 py-2 rounded-xl bg-green-600 text-white hover:opacity-90 transition"
-              >
+              <button onClick={handleUserSave} className="px-6 py-2 rounded-xl bg-green-600 text-white hover:opacity-90 transition">
                 Opslaan
               </button>
-              <button
-                onClick={() => { setSelectedUser(null); setErrors({}); }}
-                className="px-6 py-2 rounded-xl bg-gray-600 text-white hover:opacity-90 transition"
-              >
+              <button onClick={() => { setSelectedUser(null); setErrors({}); }} className="px-6 py-2 rounded-xl bg-gray-600 text-white hover:opacity-90 transition">
                 Annuleren
               </button>
             </div>
