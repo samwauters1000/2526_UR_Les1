@@ -149,3 +149,39 @@
 .bg-yellow-50 {
   background-color: #3a2e1a !important;
 }
+
+/* ─────────────────────────────────────────
+   Carousel animations — add to globals.css
+───────────────────────────────────────── */
+ 
+@keyframes progressBar {
+  from { width: 0% }
+  to   { width: 100% }
+}
+ 
+@keyframes arrowPulse {
+  0%   { transform: scale(1);    box-shadow: 0 0 0 0px rgba(114,23,232,0.6); }
+  40%  { transform: scale(0.85); box-shadow: 0 0 0 10px rgba(114,23,232,0); }
+  70%  { transform: scale(1.15); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0px rgba(114,23,232,0); }
+}
+ 
+@keyframes arrowSlideLeft {
+  0%   { transform: translateX(0px);  opacity: 1; }
+  40%  { transform: translateX(-8px); opacity: 0.3; }
+  100% { transform: translateX(0px);  opacity: 1; }
+}
+ 
+@keyframes arrowSlideRight {
+  0%   { transform: translateX(0px); opacity: 1; }
+  40%  { transform: translateX(8px); opacity: 0.3; }
+  100% { transform: translateX(0px); opacity: 1; }
+}
+ 
+.arrow-anim-prev {
+  animation: arrowPulse 0.4s ease forwards, arrowSlideLeft 0.4s ease forwards;
+}
+ 
+.arrow-anim-next {
+  animation: arrowPulse 0.4s ease forwards, arrowSlideRight 0.4s ease forwards;
+}
