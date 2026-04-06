@@ -1,44 +1,23 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
-import SidebarSlider from "@/components/SidebarSlider"
-import { GiHamburgerMenu } from "react-icons/gi"
 
 export default function GlobalNavbar() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
   return (
-    <>
-      {/* Hamburger button — uses CSS variables so it's always visible */}
-      <button
-        className="fixed top-4 left-4 z-50 p-2 text-foreground hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring rounded"
-        onClick={() => setIsSidebarOpen(true)}
-      >
-        <GiHamburgerMenu size={24} />
-      </button>
+    <div className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
+      <nav className="flex items-center gap-2 bg-[#1a1a2e] border border-[#2a2a3e] rounded-full px-8 py-3 shadow-lg">
+        <Link href="/" className="text-white font-bold text-xl mr-12 tracking-tight">
+          Sam<span className="text-purple-500">.</span>
+        </Link>
 
-      {/* SidebarSlider */}
-      <SidebarSlider isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}>
-        <nav className="flex flex-col space-y-2">
-          <Link href="/" className="text-foreground hover:text-primary hover:underline py-1">Home</Link>
-          <Link href="/about" className="text-foreground hover:text-primary hover:underline py-1">About</Link>
-          <Link href="/project-1" className="text-foreground hover:text-primary hover:underline py-1">Project 1</Link>
-          <Link href="/project-2" className="text-foreground hover:text-primary hover:underline py-1">Project 2</Link>
-          <Link href="/project-3" className="text-foreground hover:text-primary hover:underline py-1">Project 3</Link>
-          <Link href="/review" className="text-foreground hover:text-primary hover:underline py-1">Review</Link>
-          <Link href="/contact" className="text-foreground hover:text-primary hover:underline py-1">Contact</Link>
-          <Link href="/login" className="text-foreground hover:text-primary hover:underline py-1">Login</Link>
-
-          <Link
-            href="/admin"
-            className="bg-destructive text-primary-foreground px-4 py-2 rounded transition-colors duration-200 hover:opacity-80 mt-2"
-          >
-            Admin
-          </Link>
-          <Link href="/admin-user" className="text-foreground hover:text-primary hover:underline py-1">Login User</Link>
-        </nav>
-      </SidebarSlider>
-    </>
+        <Link href="/" className="text-gray-300 hover:text-purple-500 px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-base tracking-wide uppercase">Home</Link>
+        <Link href="/about" className="text-gray-300 hover:text-purple-500 px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-base tracking-wide uppercase">About</Link>
+        <Link href="/projecten" className="text-gray-300 hover:text-purple-500 px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-base tracking-wide uppercase">Projecten</Link>
+        <Link href="/login" className="text-gray-300 hover:text-purple-500 px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-base tracking-wide uppercase">Login</Link>
+        <Link href="/admin-user" className="text-gray-300 hover:text-purple-500 px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-base tracking-wide uppercase">Login User</Link>
+        <Link href="/contact" className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-full transition-colors text-base tracking-wide uppercase ml-2">Contact</Link>
+        <Link href="/admin" className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full transition-colors text-base tracking-wide uppercase ml-1">Admin</Link>
+      </nav>
+    </div>
   )
 }
