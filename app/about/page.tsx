@@ -1,121 +1,149 @@
 "use client";
 
-const skills = [
-  { name: "Java", category: "Backend" },
-  { name: "Next.js", category: "Frontend" },
-  { name: "React", category: "Library" },
-  { name: "TypeScript", category: "Language" },
-  { name: "Tailwind CSS", category: "Styling" },
-  { name: "Figma", category: "Design" },
-  { name: "PostgreSQL", category: "Database" },
-  { name: "Git", category: "Tooling" },
-];
+import React from "react";
 
-const timeline = [
+const EXPERIENCE = [
   {
-    years: "2023 – nu",
-    role: "Student Toegepaste Informatica",
+    role: "Digital & Graphic Media Student",
     company: "AP Hogeschool Antwerpen",
-    desc: "Focus op full-stack development, algoritmen en software architecture met Java en moderne webtechnologieën.",
+    period: "2024 - Present",
+    desc: "Student at AP Hogeschool Antwerpen, where I am deepening my knowledge in graphic design and digital media. Here, I develop my skills in visual communication and creative concept development.",
   },
   {
-    years: "2019 – 2023",
-    role: "Grafische Vormgeving",
+    role: "Graphic Design Student",
     company: "Forum da Vinci",
-    desc: "Grondige opleiding in visuele identiteit, lay-out en design-denken. Hier legde ik de basis voor mijn oog voor detail.",
+    period: "2023 - 2024",
+    desc: "My 7th specialization year at Forum da Vinci, focusing on graphic design, where I further developed my passion for design.",
+  },
+  {
+    role: "Student",
+    company: "Forum da Vinci",
+    period: "2020 - 2023",
+    desc: "My introduction to the graphic world began at Forum da Vinci, where I learned the basics of design and discovered my passion for visual communication.",
   },
 ];
 
 export default function About() {
   return (
-    <section className="min-h-screen px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-16 bg-[#0a0a0a] text-white">
+    /* Veranderd: text-foreground naar text-gray-300 voor een zachte grijze basis */
+    <section className="min-h-screen px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-16 text-gray-300">
       <div className="max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom duration-700">
 
-        {/* Hero Section */}
+        {/* --- Hero Section --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center mb-20">
           <div>
-            <span className="inline-block text-[11px] tracking-widest uppercase text-muted-foreground border border-white/10 rounded-full px-3 py-1 mb-5">
-              Mijn Verhaal
+            <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-accent font-bold bg-accent/15 border border-accent/30 rounded-full px-5 py-2 mb-6 backdrop-blur-md">
+              My Story
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight leading-[1.05] mb-5">
-              Waar design <br />
-              overgaat in <br />
-              <span className="text-zinc-400 italic">code.</span>
+            
+            {/* Veranderd: Titels naar een iets lichter grijs/gebroken wit voor leesbaarheid */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight leading-[1.05] mb-5 text-gray-200">
+              Hi, I'm <span className="text-accent">Sam</span>. <br />
             </h1>
-            <p className="text-base sm:text-lg leading-relaxed text-zinc-400 max-w-[42ch]">
-              Ik ben een developer met een achtergrond in grafisch ontwerp. 
-              Na mijn tijd bij Forum da Vinci besloot ik de stap te zetten naar de 
-              technische kant bij AP Hogeschool. Ik bouw digitale oplossingen die 
-              zowel technisch sterk als visueel doordacht zijn.
+            
+            {/* Veranderd: text-muted-foreground naar text-gray-400 */}
+            <p className="text-base sm:text-lg leading-relaxed text-gray-400 max-w-[42ch]">
+              I am a graphic designer student trying to learn the ins and outs of graphic design & interactive design. as a student designer, I am passionate about creating meaningful and engaging experiences that connect people. I am currently exploring the intersection of physical and digital design, aiming to create projects that enable users to interact with their environment in new, engaging, and efficient ways.
             </p>
           </div>
 
           <div className="relative">
-            {/* Zorg dat je een foto van jezelf in de public folder zet als 'sam.jpg' */}
-            <div className="w-full aspect-[4/5] bg-zinc-900 rounded-[20px] border border-white/10 overflow-hidden">
+            <div className="w-full aspect-[4/5] rounded-[24px] border border-white/5 overflow-hidden shadow-2xl">
                <img
-                src="/sam.jpg" 
+                src="/images/profile.png" 
                 alt="Sam Wauters"
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                className="h-full m-auto object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
             </div>
-            <div className="absolute -bottom-4 -left-4 bg-[#111] border border-white/10 rounded-2xl px-4 py-3 shadow-xl">
-              <p className="text-2xl font-medium leading-none mb-1 text-white">AP</p>
-              <p className="text-[10px] uppercase tracking-wider text-zinc-500">Hogeschool</p>
+            <div className="absolute -bottom-4 -left-4 bg-card border border-border rounded-[24px] px-10 py-3 shadow-2xl">
+              {/* Veranderd naar text-gray-200 */}
+              <p className="text-2xl font-bold leading-none mb-1 text-gray-200">AP</p>
+              <p className="text-[10px] uppercase tracking-widest text-accent font-bold">University</p>
             </div>
           </div>
         </div>
 
-        <hr className="border-white/5 mb-16" />
+        <hr className="border-border/40 mb-16" />
 
-        {/* Skills Section */}
-        <div className="mb-16">
-          <p className="text-[11px] tracking-widest uppercase text-zinc-500 mb-6">
-            Stack & Tools
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {skills.map((skill) => (
-              <div
-                key={skill.name}
-                className="bg-white/[0.03] border border-white/5 rounded-xl px-4 py-3 hover:border-white/20 transition-colors"
-              >
-                <p className="text-sm font-medium text-zinc-200">{skill.name}</p>
-                <p className="text-[10px] uppercase tracking-wide text-zinc-500 mt-0.5">
-                  {skill.category}
-                </p>
-              </div>
-            ))}
+        {/* --- Skills & Focus Section --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-20">
+          <div>
+            <p className="text-[11px] tracking-[0.25em] uppercase text-accent font-bold mb-6">
+              Skills & Focus
+            </p>
+            <div className="space-y-6">
+              {/* Veranderd: text-muted-foreground naar text-gray-400 */}
+              <p className="text-sm leading-relaxed text-gray-400">
+                I am currently actively developing my skills in interactive design, with a focus on creating engaging user experiences. I am particularly interested in exploring how physical and digital elements can be combined to create innovative projects that allow users to interact with their environment in new ways.
+              </p>
+              <p className="text-sm leading-relaxed text-gray-400">
+                Additionally, I am refining my ability and skill of using design tools such as Figma, Adobe Creative Cloud, and various prototyping software to bring my ideas to life. I am also learning to code in languages such as JavaScript and Next.js, which allows me to create more complex and interactive projects.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-[11px] tracking-[0.25em] uppercase text-accent font-bold mb-6">
+              My Ambitions
+            </p>
+            <div className="space-y-6">
+              <p className="text-sm leading-relaxed text-gray-400">
+                My goal is to continue growing in interactive design. 
+                I want to create projects that connect the physical and digital worlds, 
+                such as interactive installations that let people look at their environment in a new way. but also projects that are more focused on the digital world, such as websites and apps that provide a unique user experience. I am eager to explore how design can be used to create meaningful and engaging experiences that connect people and enhance their interaction with the world around them.
+              </p>
+            </div>
           </div>
         </div>
 
-        <hr className="border-white/5 mb-16" />
+        <hr className="border-border/40 mb-10" />
 
-        {/* Timeline Section */}
-        <div>
-          <p className="text-[11px] tracking-widest uppercase text-zinc-500 mb-8">
-            Educatie & Ervaring
-          </p>
-          <div className="flex flex-col">
-            {timeline.map((item, i) => (
-              <div key={i} className="grid grid-cols-[100px_1px_1fr] gap-x-8">
-                <p className="text-[11px] text-zinc-500 pt-1 text-right font-mono">{item.years}</p>
-                <div className="flex flex-col items-center">
-                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 mt-2 shrink-0" />
-                  {i < timeline.length - 1 && (
-                    <div className="flex-1 w-[1px] bg-white/10 my-2" />
-                  )}
-                </div>
-                <div className="pb-12">
-                  <p className="text-md font-medium mb-0.5 text-white">{item.role}</p>
-                  <p className="text-sm text-zinc-400 mb-3">{item.company}</p>
-                  <p className="text-sm text-zinc-500 leading-relaxed max-w-2xl">{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* --- Experience Section --- */}
+        <ExperienceSection />
 
       </div>
     </section>
+  );
+}
+
+function ExperienceSection() {
+  return (
+    <div className="py-20 flex flex-col items-center">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-8 h-px bg-accent/50" />
+        <span className="text-[11px] uppercase tracking-[0.25em] text-accent font-bold">Background</span>
+        <div className="w-8 h-px bg-accent/50" />
+      </div>
+
+      {/* Veranderd naar text-gray-200 */}
+      <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-12 text-gray-200 text-center">
+        Experience & Education
+      </h2>
+
+      <div className="w-full max-w-3xl flex flex-col">
+        {EXPERIENCE.map((e, i) => (
+          <div
+            key={i}
+            className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-4 md:gap-12 py-10 border-b border-border/50 last:border-none group"
+          >
+            <div>
+              <p className="text-accent text-xs font-bold uppercase tracking-widest">
+                {e.period}
+              </p>
+              {/* Veranderd naar text-gray-400 */}
+              <p className="text-gray-400 text-sm mt-1 font-medium">{e.company}</p>
+            </div>
+            <div>
+              {/* Veranderd naar text-gray-200 */}
+              <h3 className="text-gray-200 font-semibold text-lg mb-2 group-hover:text-accent transition-colors">
+                {e.role}
+              </h3>
+              {/* Veranderd naar text-gray-400 */}
+              <p className="text-gray-400 text-sm leading-relaxed">{e.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
