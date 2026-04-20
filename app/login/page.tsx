@@ -25,6 +25,7 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     try {
+      // Simulate network delay
       await new Promise((r) => setTimeout(r, 1200))
       toast.success(`${actionName} submitted successfully!`)
     } catch {
@@ -40,7 +41,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle>Welcome</CardTitle>
           <CardDescription>
-            Login, create an account, or reset your password
+            Log in, create an account, or reset your password
           </CardDescription>
         </CardHeader>
 
@@ -57,7 +58,7 @@ export default function LoginPage() {
               <form onSubmit={(e) => mockSubmit(e, 'Login')} className="space-y-4">
                 <div className="space-y-2">
                   <Label>Email</Label>
-                  <Input type="email" required />
+                  <Input type="email" placeholder="email@example.com" required />
                 </div>
 
                 <div className="space-y-2">
@@ -76,7 +77,7 @@ export default function LoginPage() {
               <form onSubmit={(e) => mockSubmit(e, 'Register')} className="space-y-4">
                 <div className="space-y-2">
                   <Label>Email</Label>
-                  <Input type="email" required />
+                  <Input type="email" placeholder="email@example.com" required />
                 </div>
 
                 <div className="space-y-2">
@@ -100,7 +101,7 @@ export default function LoginPage() {
               <form onSubmit={(e) => mockSubmit(e, 'Password Reset')} className="space-y-4">
                 <div className="space-y-2">
                   <Label>Email</Label>
-                  <Input type="email" required />
+                  <Input type="email" placeholder="email@example.com" required />
                 </div>
 
                 <Button variant="secondary" className="w-full" disabled={loading}>

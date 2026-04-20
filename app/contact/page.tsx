@@ -10,15 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-
-
 import { toast } from "@/components/ui/toast"
-// Success example
-toast.success("Logged in successfully!")
-
-// Error example
-toast.error("Something went wrong")
-
 
 /* ---------------- SCHEMA ---------------- */
 
@@ -48,10 +40,16 @@ export default function ContactForm() {
 
   async function onSubmit(_: ContactFormValues) {
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 1200))
-    setLoading(false)
-    alert("Message sent (mock)")
-    form.reset()
+    try {
+      // Simulate API call
+      await new Promise((r) => setTimeout(r, 1200))
+      toast.success("Message sent successfully!")
+      form.reset()
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -60,15 +58,15 @@ export default function ContactForm() {
         <CardHeader>
           <CardTitle>Contact Us</CardTitle>
           <CardDescription>
-            Send us a message and we’ll get back to you
+            Send us a message and we’ll get back to you as soon as possible.
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label>Name</Label>
-              <Input {...form.register("name")} />
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" {...form.register("name")} placeholder="Your name" />
               {form.formState.errors.name && (
                 <p className="text-sm text-red-500">
                   {form.formState.errors.name.message}
@@ -77,8 +75,8 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-2">
-              <Label>Email</Label>
-              <Input type="email" {...form.register("email")} />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...form.register("email")} placeholder="your.email@example.com" />
               {form.formState.errors.email && (
                 <p className="text-sm text-red-500">
                   {form.formState.errors.email.message}
@@ -87,8 +85,8 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-2">
-              <Label>Subject</Label>
-              <Input {...form.register("subject")} />
+              <Label htmlFor="subject">Subject</Label>
+              <Input id="subject" {...form.register("subject")} placeholder="How can we help?" />
               {form.formState.errors.subject && (
                 <p className="text-sm text-red-500">
                   {form.formState.errors.subject.message}
@@ -97,8 +95,8 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-2">
-              <Label>Message</Label>
-              <Textarea rows={5} {...form.register("message")} />
+              <Label htmlFor="message">Message</Label>
+              <Textarea id="message" rows={5} {...form.register("message")} placeholder="Type your message here..." />
               {form.formState.errors.message && (
                 <p className="text-sm text-red-500">
                   {form.formState.errors.message.message}

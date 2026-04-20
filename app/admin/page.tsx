@@ -1,46 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineWarning } from "react-icons/ai";
 import { FiFileText, FiEdit2, FiCheck } from "react-icons/fi";
 
 type User = {
   id: number;
-  naam: string;
-  rol: string;
-  actief: boolean;
+  name: string;
+  role: string;
+  active: boolean;
 };
 
 type Errors = {
-  naam?: string;
-  rol?: string;
+  name?: string;
+  role?: string;
 };
 
 export default function AdminPage() {
   const [users, setUsers] = useState<User[]>([
-    { id: 1, naam: "Jan Jansen", rol: "gebruiker", actief: true },
-    { id: 2, naam: "Sara Peeters", rol: "editor", actief: true },
-    { id: 3, naam: "Tom Claes", rol: "admin", actief: true },
+    { id: 1, name: "John Doe", role: "user", active: true },
+    { id: 2, name: "Sarah Smith", role: "editor", active: true },
+    { id: 3, name: "Tom Thompson", role: "admin", active: true },
   ]);
 
   const [search, setSearch] = useState("");
   const [editMode, setEditMode] = useState(false);
 
-  const [aantalGebruikers, setAantalGebruikers] = useState("1,234");
-  const [actieveSessies, setActieveSessies] = useState("87");
-  const [activiteiten, setActiviteiten] = useState([
-    "Jan Jansen ingelogd",
-    "Sara Peeters artikel gepubliceerd",
-    "Nieuwe gebruiker geregistreerd",
+  const [userCount, setUserCount] = useState("1,234");
+  const [activeSessions, setActiveSessions] = useState("87");
+  const [activities, setActivities] = useState([
+    "John Doe logged in",
+    "Sarah Smith published an article",
+    "New user registered",
   ]);
-  const [alertText, setAlertText] = useState("Alert: Systeemfout bij laatste backup");
+  const [alertText, setAlertText] = useState("Alert: System error during last backup");
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editedUser, setEditedUser] = useState<User | null>(null);
   const [errors, setErrors] = useState<Errors>({});
 
   const filteredUsers = users.filter((u) =>
-    u.naam.toLowerCase().includes(search.toLowerCase())
+    u.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleEdit = (user: User) => {
@@ -56,9 +56,9 @@ export default function AdminPage() {
 
   const validateUser = () => {
     const newErrors: Errors = {};
-    if (!editedUser?.naam || editedUser.naam.trim().length < 2)
-      newErrors.naam = "Naam moet minstens 2 karakters bevatten.";
-    if (!editedUser?.rol) newErrors.rol = "Rol is verplicht.";
+    if (!editedUser?.name || editedUser.name.trim().length < 2)
+      newErrors.name = "Name must contain at least 2 characters.";
+    if (!editedUser?.role) newErrors.role = "Role is required.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -71,8 +71,8 @@ export default function AdminPage() {
     setErrors({});
   };
 
-  const updateActiviteit = (index: number, value: string) => {
-    setActiviteiten((prev) => prev.map((a, i) => (i === index ? value : a)));
+  const updateActivity = (index: number, value: string) => {
+    setActivities((prev) => prev.map((a, i) => (i === index ? value : a)));
   };
 
   return (
@@ -102,47 +102,47 @@ export default function AdminPage() {
           }}
         >
           {editMode ? <FiCheck size={16} /> : <FiEdit2 size={16} />}
-          {editMode ? "Opslaan" : "Bewerken"}
+          {editMode ? "Save Changes" : "Edit Dashboard"}
         </button>
       </div>
 
-      {/* 1. Dashboard / Overzicht */}
+      {/* 1. Dashboard / Overview */}
       <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Dashboard / Overzicht</h2>
+        <h2 className="text-2xl font-semibold">Dashboard Overview</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 border rounded bg-gray-50">
-            <p className="text-gray-500">Aantal gebruikers</p>
+            <p className="text-gray-500">Total Users</p>
             {editMode ? (
               <input
-                value={aantalGebruikers}
-                onChange={(e) => setAantalGebruikers(e.target.value)}
+                value={userCount}
+                onChange={(e) => setUserCount(e.target.value)}
                 className="text-2xl font-bold w-full border-b border-primary bg-transparent outline-none"
               />
             ) : (
-              <p className="text-2xl font-bold">{aantalGebruikers}</p>
+              <p className="text-2xl font-bold">{userCount}</p>
             )}
           </div>
           <div className="p-4 border rounded bg-gray-50">
-            <p className="text-gray-500">Actieve sessies</p>
+            <p className="text-gray-500">Active Sessions</p>
             {editMode ? (
               <input
-                value={actieveSessies}
-                onChange={(e) => setActieveSessies(e.target.value)}
+                value={activeSessions}
+                onChange={(e) => setActiveSessions(e.target.value)}
                 className="text-2xl font-bold w-full border-b border-primary bg-transparent outline-none"
               />
             ) : (
-              <p className="text-2xl font-bold">{actieveSessies}</p>
+              <p className="text-2xl font-bold">{activeSessions}</p>
             )}
           </div>
           <div className="p-4 border rounded bg-gray-50">
-            <p className="text-gray-500">Recente activiteiten</p>
+            <p className="text-gray-500">Recent Activities</p>
             <ul className="list-disc ml-5 space-y-1">
-              {activiteiten.map((a, i) =>
+              {activities.map((a, i) =>
                 editMode ? (
                   <input
                     key={i}
                     value={a}
-                    onChange={(e) => updateActiviteit(i, e.target.value)}
+                    onChange={(e) => updateActivity(i, e.target.value)}
                     className="w-full border-b border-primary bg-transparent outline-none text-sm"
                   />
                 ) : (
@@ -166,145 +166,147 @@ export default function AdminPage() {
         </div>
       </section>
 
-      {/* 2. Gebruikersbeheer */}
+      {/* 2. User Management */}
       <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Gebruikersbeheer</h2>
+        <h2 className="text-2xl font-semibold">User Management</h2>
         <input
           type="text"
-          placeholder="Zoek gebruiker..."
+          placeholder="Search users..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border rounded px-3 py-2"
         />
-        <table className="w-full text-left border-collapse mt-2">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="p-2 border">Naam</th>
-              <th className="p-2 border">Rol</th>
-              <th className="p-2 border">Actief</th>
-              <th className="p-2 border">Acties</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50">
-                <td className="p-2 border">{u.naam}</td>
-                <td className="p-2 border">{u.rol}</td>
-                <td className="p-2 border">{u.actief ? "Ja" : "Nee"}</td>
-                <td className="p-2 border space-x-2">
-                  <button onClick={() => handleEdit(u)} className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                    Bewerken
-                  </button>
-                  <button className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    Reset wachtwoord
-                  </button>
-                  <button className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700">
-                    Blokkeren
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse mt-2">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="p-2 border">Name</th>
+                <th className="p-2 border">Role</th>
+                <th className="p-2 border">Status</th>
+                <th className="p-2 border">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredUsers.map((u) => (
+                <tr key={u.id} className="hover:bg-gray-50">
+                  <td className="p-2 border">{u.name}</td>
+                  <td className="p-2 border capitalize">{u.role}</td>
+                  <td className="p-2 border">{u.active ? "Active" : "Inactive"}</td>
+                  <td className="p-2 border space-x-2">
+                    <button onClick={() => handleEdit(u)} className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">
+                      Edit
+                    </button>
+                    <button className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                      Reset Password
+                    </button>
+                    <button className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm">
+                      Block
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
-      {/* 3. Contentbeheer */}
+      {/* 3. Content Management */}
       <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Contentbeheer</h2>
-        <div className="flex flex-col md:flex-row gap-4">
+        <h2 className="text-2xl font-semibold">Content Management</h2>
+        <div className="flex flex-wrap gap-4">
           <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-            <FiFileText /> <span>Nieuw artikel</span>
+            <FiFileText /> <span>New Article</span>
           </button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Media beheren</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Categorieën & tags</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Manage Media</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Categories & Tags</button>
         </div>
       </section>
 
-      {/* 4. Instellingen / Configuratie */}
+      {/* 4. Settings / Configuration */}
       <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Instellingen / Configuratie</h2>
+        <h2 className="text-2xl font-semibold">Settings & Configuration</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Site-instellingen</p><p>Naam, logo, contactgegevens</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">E-mail templates</p><p>Notificaties instellen</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Integraties</p><p>API-sleutels, externe tools</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Betalingsinstellingen</p><p>Abonnementen beheren</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Site Settings</p><p className="text-sm text-gray-600">Name, logo, contact details</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Email Templates</p><p className="text-sm text-gray-600">Configure notifications</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Integrations</p><p className="text-sm text-gray-600">API keys, external tools</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Payment Settings</p><p className="text-sm text-gray-600">Manage subscriptions</p></div>
         </div>
       </section>
 
-      {/* 5. Beveiliging & Toegang */}
+      {/* 5. Security & Access */}
       <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Beveiliging & Toegang</h2>
+        <h2 className="text-2xl font-semibold">Security & Access</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Rollen & permissies</p><p>Per sectie instellen</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Twee-factor-authenticatie</p><p>Verplicht voor beheerders</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Audit log</p><p>Overzicht van admin-activiteiten</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Roles & Permissions</p><p className="text-sm text-gray-600">Configure per section</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Two-Factor Authentication</p><p className="text-sm text-gray-600">Mandatory for admins</p></div>
+          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Audit Log</p><p className="text-sm text-gray-600">Overview of admin activities</p></div>
         </div>
       </section>
 
-      {/* 6. Data en rapportages */}
+      {/* 6. Data & Reports */}
       <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Data en rapportages</h2>
-        <div className="flex flex-col md:flex-row gap-4">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Export gebruikersdata</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Grafieken & rapporten</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Backups maken/herstellen</button>
+        <h2 className="text-2xl font-semibold">Data & Reports</h2>
+        <div className="flex flex-wrap gap-4">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Export User Data</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Charts & Reports</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Create/Restore Backups</button>
         </div>
       </section>
 
-      {/* 7. Functies voor efficiency */}
+      {/* 7. Efficiency Tools */}
       <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Functies voor efficiency</h2>
-        <div className="flex flex-col md:flex-row gap-4">
-          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Bulk acties</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Zoeken & filteren</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Notificaties</button>
+        <h2 className="text-2xl font-semibold">Efficiency Tools</h2>
+        <div className="flex flex-wrap gap-4">
+          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Bulk Actions</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Search & Filter</button>
+          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Notifications</button>
         </div>
       </section>
 
       {/* Edit User Modal */}
       {selectedUser && editedUser && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-6">
-          <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-4">
-            <h2 className="text-2xl font-bold">Gebruiker bewerken</h2>
+          <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-4">
+            <h2 className="text-2xl font-bold">Edit User</h2>
             <div>
-              <label className="block text-sm font-medium mb-1">Naam</label>
+              <label className="block text-sm font-medium mb-1">Name</label>
               <input
-                name="naam"
-                value={editedUser.naam}
+                name="name"
+                value={editedUser.name}
                 onChange={handleUserChange}
                 className="w-full border rounded-xl px-4 py-2"
               />
-              {errors.naam && <p className="text-red-500 text-sm mt-1">{errors.naam}</p>}
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Rol</label>
+              <label className="block text-sm font-medium mb-1">Role</label>
               <select
-                name="rol"
-                value={editedUser.rol}
+                name="role"
+                value={editedUser.role}
                 onChange={handleUserChange}
                 className="w-full border rounded-xl px-4 py-2"
               >
-                <option value="gebruiker">Gebruiker</option>
+                <option value="user">User</option>
                 <option value="editor">Editor</option>
                 <option value="admin">Admin</option>
               </select>
-              {errors.rol && <p className="text-red-500 text-sm mt-1">{errors.rol}</p>}
+              {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
             </div>
             <div className="flex items-center gap-2">
               <input
                 type="checkbox"
-                id="actief"
-                checked={editedUser.actief}
-                onChange={(e) => setEditedUser((prev) => prev ? { ...prev, actief: e.target.checked } : prev)}
+                id="active"
+                checked={editedUser.active}
+                onChange={(e) => setEditedUser((prev) => prev ? { ...prev, active: e.target.checked } : prev)}
               />
-              <label htmlFor="actief" className="text-sm font-medium">Actief</label>
+              <label htmlFor="active" className="text-sm font-medium">Active</label>
             </div>
             <div className="flex gap-4 pt-2">
               <button onClick={handleUserSave} className="px-6 py-2 rounded-xl bg-green-600 text-white hover:opacity-90 transition">
-                Opslaan
+                Save
               </button>
               <button onClick={() => { setSelectedUser(null); setErrors({}); }} className="px-6 py-2 rounded-xl bg-gray-600 text-white hover:opacity-90 transition">
-                Annuleren
+                Cancel
               </button>
             </div>
           </div>
