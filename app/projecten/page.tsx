@@ -8,6 +8,8 @@ function InternalPDFViewer({ file }: { file: string }) {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [renderNav, setRenderNav] = useState(false);
+  const [containerWidth, setContainerWidth] = useState<number>(400); 
+  const containerRef = useRef<HTMLDivElement>(null);
   const [libraries, setLibraries] = useState<{
     Document: any;
     Page: any;
@@ -23,26 +25,41 @@ function InternalPDFViewer({ file }: { file: string }) {
     loadLibs();
   }, []);
 
-  if (!libraries) return <div className="text-white/20 text-sm italic">Initializing...</div>;
+  useEffect(() => {
+    if (!containerRef.current) return;
+    setContainerWidth(containerRef.current.getBoundingClientRect().width);
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.contentRect.width > 0) {
+          setContainerWidth(entry.contentRect.width);
+        }
+      }
+    });
+    resizeObserver.observe(containerRef.current);
+    return () => resizeObserver.disconnect();
+  }, [libraries]);
+
+  if (!libraries) return <div className="text-foreground/20 text-sm italic">Initializing...</div>;
   const { Document, Page } = libraries;
 
   return (
     <div className="flex flex-col items-center w-full bg-transparent">
-      <div className="w-full flex justify-center overflow-hidden rounded-sm shadow-xl aspect-square bg-white/5">
+      <div ref={containerRef} className="w-full flex justify-center overflow-hidden rounded-sm shadow-xl bg-white min-h-[300px]">
         <Document
           file={file}
           onLoadSuccess={({ numPages }: { numPages: number }) => {
             setNumPages(numPages);
             setRenderNav(true);
           }}
+          loading={<div className="py-20 text-black/20 italic">Loading page...</div>}
           className="flex items-center justify-center"
         >
           <Page
             pageNumber={pageNumber}
-            width={300}
+            width={containerWidth} 
             renderTextLayer={false}
             renderAnnotationLayer={false}
-            canvasBackground="transparent"
+            canvasBackground="white"
           />
         </Document>
       </div>
@@ -53,21 +70,15 @@ function InternalPDFViewer({ file }: { file: string }) {
             type="button"
             onClick={(e) => { e.preventDefault(); setPageNumber((p) => Math.max(p - 1, 1)); }}
             disabled={pageNumber <= 1}
-            className="text-white disabled:opacity-10 text-2xl p-2 hover:text-purple-400 transition-colors"
-          >
-            ‹
-          </button>
-          <span className="text-[10px] tracking-widest text-white/40 uppercase font-bold">
-            {pageNumber} / {numPages}
-          </span>
+            className="text-foreground disabled:opacity-10 text-2xl p-2 hover:text-primary transition-colors"
+          >‹</button>
+          <span className="text-[10px] tracking-widest text-foreground/40 uppercase font-bold">{pageNumber} / {numPages}</span>
           <button
             type="button"
             onClick={(e) => { e.preventDefault(); setPageNumber((p) => Math.min(p + 1, numPages)); }}
             disabled={pageNumber >= numPages}
-            className="text-white disabled:opacity-10 text-2xl p-2 hover:text-purple-400 transition-colors"
-          >
-            ›
-          </button>
+            className="text-foreground disabled:opacity-10 text-2xl p-2 hover:text-primary transition-colors"
+          >›</button>
         </div>
       )}
     </div>
@@ -76,143 +87,133 @@ function InternalPDFViewer({ file }: { file: string }) {
 
 const PDFViewer = dynamic(() => Promise.resolve(InternalPDFViewer), {
   ssr: false,
-  loading: () => <div className="text-white/20 text-sm italic font-light tracking-widest">Loading PDF...</div>,
+  loading: () => <div className="text-foreground/20 text-sm italic font-light tracking-widest">Loading PDF...</div>,
 });
-
-const ACCENT = "#a855f7";
 
 const projects = [
   {
     title: "Magazine Design — School Project",
     type: "pdf",
     file: "/images/magazine.pdf",
-    description: "This is the cover of a magazine I created. It is a publication focusing on lifestyle, fashion, and more, featuring impactful photography and subjects that are personally significant to me.",
   },
   {
     title: "Poster — Theatre Play",
     type: "image",
     file: "/images/toneel.png",
-    description: "My design for a theatre play in 2023. The school administration chose this poster out of the entire class, which served as a wonderful recognition.",
   },
   {
     title: "Infographic — De Lijn Etiquette",
     type: "image",
     file: "/images/infographic.png",
-    description: "A humorous infographic regarding public transport etiquette. A fun challenge to translate an everyday subject into a visual narrative.",
   },
   {
-    title: "in the works... — sorry, can't say more yet!",
+    title: "in the works...",
     type: "image",
     file: "/images/studio-lux.jpg",
-    description: "More to come soon! This is a project i'm possible working on!",
-  }
+  },
 ];
 
 export default function ProjectsPage() {
   const itemsRef = useRef<(HTMLElement | null)[]>([]);
   const [overlay, setOverlay] = useState<string | null>(null);
 
+  // Helper om te checken of het een PDF is
+  const isPDF = overlay?.toLowerCase().endsWith(".pdf");
+
   useEffect(() => {
     const els = itemsRef.current.filter(Boolean) as HTMLElement[];
-    els.forEach((el) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(30px)";
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const target = entry.target as HTMLElement;
-          target.style.opacity = "1";
-          target.style.transform = "translateY(0)";
-          target.style.transition = "opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)";
-        }
-      });
-    }, { threshold: 0.1 });
-
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const target = entry.target as HTMLElement;
+            target.style.opacity = "1";
+            target.style.transform = "translateY(0)";
+            target.style.transition = "opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)";
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
   return (
-    <main className="min-h-screen text-white bg-[#1E202C]">
-      
-      {/* Overlay Modal */}
+    <main className="min-h-screen text-foreground bg-background">
+      {/* --- GECORRIGEERDE OVERLAY --- */}
       {overlay && (
-        <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md animate-in fade-in duration-300 cursor-pointer"
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md animate-in fade-in duration-300"
           onClick={() => setOverlay(null)}
         >
-          <div className="relative max-w-[80vw] max-h-[70vh]">
-            <img 
-              src={overlay} 
-              className="w-full h-full max-h-[70vh] object-contain shadow-2xl transition-transform duration-500" 
-              alt="Preview" 
-              onClick={(e) => e.stopPropagation()} 
-            />
-            <button 
-              className="absolute -top-3 -right-3 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg transition-transform hover:scale-110 z-[110]"
-              style={{ backgroundColor: ACCENT }}
-              onClick={(e) => {
-                e.stopPropagation();
-                setOverlay(null);
-              }}
-            >
-              ✕
-            </button>
+          <div className="relative w-[90vw] h-[85vh] flex items-center justify-center">
+            {isPDF ? (
+              /* Als het een PDF is, gebruik een iframe voor de volledige weergave */
+              <iframe
+                src={`${overlay}#view=FitH`}
+                className="w-full h-full rounded-md shadow-2xl"
+                title="PDF Preview"
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              /* Als het een afbeelding is, gebruik de vertrouwde img tag */
+              <img
+                src={overlay}
+                className="max-w-full max-h-full object-contain shadow-2xl"
+                alt="Preview"
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
+            
+            <button
+              className="absolute -top-10 right-0 md:-right-10 w-10 h-10 flex items-center justify-center text-white text-3xl font-light hover:text-primary transition-colors"
+              onClick={() => setOverlay(null)}
+            >✕</button>
           </div>
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto px-6 py-24 flex flex-col gap-40">
-        <header ref={(el) => { itemsRef.current[0] = el; }}>
-          <h1 className="text-6xl font-light tracking-tighter mb-4 text-gray-200">
-            Projects
-          </h1>
+      <div className="w-full px-4 max-w-sm mx-auto md:max-w-4xl md:px-6 py-24 flex flex-col gap-24 md:gap-40">
+        <header ref={(el) => { itemsRef.current[0] = el; }} className="opacity-0 translate-y-[30px]">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-8 h-px bg-primary" />
+            <span className="text-xs uppercase tracking-widest text-primary">Portfolio</span>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground">Projects</h1>
         </header>
 
         {projects.map((project, i) => (
-          <article 
-            key={i} 
+          <article
+            key={i}
             ref={(el) => { itemsRef.current[i + 1] = el; }}
-            className={`flex flex-col md:flex-row gap-16 items-center ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}
+            className={`flex flex-col md:flex-row gap-10 md:gap-16 items-center opacity-0 translate-y-[30px] ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}
           >
-            {/* LINKER KOLOM: Foto + Click View Knop */}
             <div className="w-full md:w-1/2 flex flex-col items-center">
               <div className="w-full relative group">
                 {project.type === "pdf" ? (
-                  <div className="w-full">
-                    <PDFViewer file={project.file} />
-                  </div>
+                  <PDFViewer file={project.file} />
                 ) : (
-                  <div className="overflow-hidden rounded-sm shadow-xl w-full aspect-square bg-white/5">
-                    <img 
-                      src={project.file} 
-                      className="w-full h-full cursor-zoom-in grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105 object-cover"
-                      onClick={() => setOverlay(project.file)}
-                      alt={project.title}
-                    />
+                  <div className="overflow-hidden rounded-sm shadow-xl w-full aspect-square bg-foreground/5 cursor-zoom-in" onClick={() => setOverlay(project.file)}>
+                    <img src={project.file} className="w-full h-full grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105 object-cover" alt={project.title} />
                   </div>
                 )}
               </div>
-              
-              <button 
+
+              <button
                 onClick={() => setOverlay(project.file)}
                 className="mt-6 flex items-center gap-4 group/btn"
               >
-                <div className="w-12 h-[1px] bg-gray-600 group-hover/btn:w-16 group-hover/btn:bg-purple-500 transition-all duration-500" />
-                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 group-hover/btn:text-gray-300 transition-colors duration-500">
-                  Click for full view
+                <div className="w-12 h-[1px] bg-foreground/30 group-hover/btn:w-16 group-hover/btn:bg-primary transition-all duration-500" />
+                <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/40 group-hover/btn:text-foreground transition-colors duration-500">
+                  {project.type === "pdf" ? "Open Full PDF" : "Click for full view"}
                 </span>
               </button>
             </div>
 
-            {/* RECHTER KOLOM: Tekst */}
             <div className="w-full md:w-1/2">
-              <h2 className="text-3xl font-medium mb-6" style={{ color: ACCENT }}>{project.title}</h2>
-              <p className="text-gray-400 leading-relaxed font-light text-lg">
-                {project.description}
-              </p>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 text-primary">{project.title}</h2>
+              <p className="text-foreground/60 leading-relaxed font-light text-base md:text-lg">Project description here...</p>
             </div>
           </article>
         ))}

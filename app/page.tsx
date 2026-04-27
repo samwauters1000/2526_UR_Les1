@@ -97,50 +97,52 @@ function Hero() {
             width: "auto",
             objectFit: "contain",
             objectPosition: "bottom",
+            zIndex: 2,
           }}
         />
-        <div style={{ position: "absolute", top: "75%", left: "-50%", width: "90%", height: "40%", background: "#7217E8", opacity: 0.5, zIndex: 2, transform: "translateY(-50%)" }} />
       </div>
 
       {/* DESKTOP ONLY */}
       <div className="hidden md:block" style={{ width: "40%", flexShrink: 0, position: "relative", backgroundImage: "url('/images/profile.png')", backgroundSize: "70%", backgroundPosition: "110% 30%", backgroundRepeat: "no-repeat" }}>
         <div style={{ position: "absolute", inset: 0, background: "rgba(30,32,44,0.25)" }} />
-        <div style={{ position: "absolute", top: "50%", left: "-10%", width: "130%", height: "23%", background: "#7217E8", opacity: 0.5, zIndex: 2 }} />
       </div>
 
-      {/* Text */}
-      <div className="relative flex flex-col justify-center px-8 py-12 md:pl-24 md:pr-12 xl:pl-100 xl:pr-20 overflow-hidden" style={{ flex: 1 }}>
-        <span
-          className="pointer-events-none select-none absolute right-0 top-1/2 -translate-y-1/2 font-extrabold leading-none"
-          style={{ fontSize: "clamp(5rem, 18vw, 16rem)", fontFamily: "var(--font-geist-sans)", color: "rgba(114,23,232,0.04)" }}
-          aria-hidden
-        >
-          SAM
-        </span>
-        <div className="animate-fadeIn relative z-10">
-          <span className="inline-block mb-6 px-4 py-1 rounded-full text-xs uppercase tracking-widest text-primary border border-primary/20 bg-primary/10">
-            Graphic Design Student
-          </span>
-          <h1
-            className="font-extrabold leading-[1.02] tracking-tight mb-6 text-foreground"
-            style={{ fontSize: "clamp(2.2rem, 5.5vw, 5rem)", fontFamily: "var(--font-geist-sans)" }}
+      {/* Text Content */}
+      <div className="relative flex flex-col justify-center md:pl-24 md:pr-12 xl:pl-100 xl:pr-20 overflow-hidden" style={{ flex: 1 }}>
+        {/* Mobile: constrain to navbar width */}
+        <div className="px-4 md:px-0 w-full md:w-auto max-w-sm md:max-w-none mx-auto md:mx-0 py-12">
+          <span
+            className="pointer-events-none select-none absolute right-0 top-1/2 -translate-y-1/2 font-extrabold leading-none"
+            style={{ fontSize: "clamp(5rem, 18vw, 16rem)", fontFamily: "var(--font-geist-sans)", color: "rgba(114,23,232,0.04)" }}
+            aria-hidden
           >
-            Hi, I&apos;m Sam <br /> <span className="text-primary">Wauters.</span>
-          </h1>
-          <div className="w-16 h-1 bg-primary rounded-full mb-6" />
-          <p className="text-foreground/50 font-light text-base md:text-lg leading-relaxed max-w-sm mb-10">
-            Crafting visual identities and digital experiences that feel intentional, bold, and human.
-          </p>
-          <div className="flex flex-wrap gap-4 mb-10 md:mb-14">
-            <Link href="#projects" className="px-7 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:opacity-85 transition-opacity">
-              View my work
-            </Link>
-            <Link href="/contact" className="px-7 py-3 rounded-full border border-border text-foreground/70 font-normal text-sm hover:border-primary hover:text-foreground transition-all">
-              Get in touch
-            </Link>
-          </div>
-          <div className="hidden md:flex items-center gap-3 text-foreground/30 text-xs uppercase tracking-widest">
-            <div className="w-10 h-px bg-foreground/30" /> Scroll to explore
+            SAM
+          </span>
+          <div className="animate-fadeIn relative z-10">
+            <span className="inline-block mb-6 px-4 py-1 rounded-full text-xs uppercase tracking-widest text-primary border border-primary/20 bg-primary/10">
+              Graphic Design Student
+            </span>
+            <h1
+              className="font-extrabold leading-[1.02] tracking-tight mb-6 text-foreground"
+              style={{ fontSize: "clamp(2.2rem, 5.5vw, 5rem)", fontFamily: "var(--font-geist-sans)" }}
+            >
+              Hi, I&apos;m Sam <br /> <span className="text-primary">Wauters.</span>
+            </h1>
+            <div className="w-16 h-1 bg-primary rounded-full mb-6" />
+            <p className="text-foreground/50 font-light text-base md:text-lg leading-relaxed max-w-sm mb-10">
+              Crafting visual identities and digital experiences that feel intentional, bold, and human.
+            </p>
+            <div className="flex flex-wrap gap-4 mb-10 md:mb-14">
+              <Link href="#projects" className="px-7 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:opacity-85 transition-opacity">
+                View my work
+              </Link>
+              <Link href="/contact" className="px-7 py-3 rounded-full border border-border text-foreground/70 font-normal text-sm hover:border-primary hover:text-foreground transition-all">
+                Get in touch
+              </Link>
+            </div>
+            <div className="hidden md:flex items-center gap-3 text-foreground/30 text-xs uppercase tracking-widest">
+              <div className="w-10 h-px bg-foreground/30" /> Scroll to explore
+            </div>
           </div>
         </div>
       </div>
@@ -149,7 +151,6 @@ function Hero() {
   )
 }
 
-// Single-card swipeable carousel for mobile
 function MobileCarousel() {
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -185,92 +186,88 @@ function MobileCarousel() {
     <section
       id="projects"
       ref={ref}
-      className="py-12 px-6 flex flex-col items-center transition-all duration-700"
+      className="py-12 flex flex-col items-center transition-all duration-700"
       style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(60px)" }}
     >
-      <div className="flex items-center gap-4 mb-5">
-        <div className="w-8 h-px bg-primary" />
-        <span className="text-xs uppercase tracking-widest text-primary">Selected work</span>
-        <div className="w-8 h-px bg-primary" />
-      </div>
-      <h2
-        className="font-bold tracking-tight mb-8 text-foreground text-center"
-        style={{ fontSize: "clamp(2rem, 8vw, 3rem)", fontFamily: "var(--font-geist-sans)" }}
-      >
-        Projects
-      </h2>
-
-      {/* Card + arrows wrapper */}
-      <div
-        className="relative w-full max-w-xs mx-auto"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      >
-        {/* Prev arrow */}
-        <button
-          onClick={prev}
-          className="absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-lg font-bold shadow-lg active:scale-95 transition-all"
+      {/* Constrain to navbar width — px-4 matches navbar outer padding, max-w-sm matches navbar max-w-sm */}
+      <div className="w-full max-w-sm mx-auto px-4 flex flex-col items-center">
+        <div className="flex items-center gap-4 mb-5">
+          <div className="w-8 h-px bg-primary" />
+          <span className="text-xs uppercase tracking-widest text-primary">Selected work</span>
+          <div className="w-8 h-px bg-primary" />
+        </div>
+        <h2
+          className="font-bold tracking-tight mb-8 text-foreground text-center"
+          style={{ fontSize: "clamp(2rem, 8vw, 3rem)", fontFamily: "var(--font-geist-sans)" }}
         >
-          &#8592;
-        </button>
+          Projects
+        </h2>
 
-        {/* Card */}
+        {/* Carousel: px-8 gives room for the arrow buttons (w-12 = 3rem) without overflow */}
         <div
-          onClick={() => router.push(p.href)}
-          className="bg-card overflow-hidden shadow-[0_0_60px_0px_rgba(114,23,232,0.2)] cursor-pointer w-full transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
-          style={{ borderRadius: "1.5rem" }}
+          className="relative w-full px-8"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
         >
-          <div className="relative w-full overflow-hidden" style={{ height: "240px" }}>
-            {p.type === "image" ? (
-              <img
-                src={p.image}
-                alt={p.title}
-                className="w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
-              />
-            ) : (
-              <div className="w-full h-full bg-secondary flex flex-col items-center justify-center gap-2">
-                <span className="text-4xl">📄</span>
-                <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">PDF Project</span>
+          <button
+            onClick={prev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-base font-bold shadow-lg active:scale-95 transition-all"
+          >
+            &#8592;
+          </button>
+
+          <div
+            onClick={() => router.push(p.href)}
+            className="bg-card overflow-hidden shadow-[0_0_60px_0px_rgba(114,23,232,0.2)] cursor-pointer w-full transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
+            style={{ borderRadius: "1.5rem" }}
+          >
+            <div className="relative w-full overflow-hidden" style={{ height: "240px" }}>
+              {p.type === "image" ? (
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  className="w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                />
+              ) : (
+                <div className="w-full h-full bg-secondary flex flex-col items-center justify-center gap-2">
+                  <span className="text-4xl">📄</span>
+                  <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">PDF Project</span>
+                </div>
+              )}
+              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/80 text-primary-foreground text-[10px] uppercase tracking-widest font-bold backdrop-blur-sm shadow-lg">
+                {p.tag}
               </div>
-            )}
-            <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/80 text-primary-foreground text-[10px] uppercase tracking-widest font-bold backdrop-blur-sm shadow-lg">
-              {p.tag}
+            </div>
+            <div className="px-5 pt-4 pb-5">
+              <span className="text-[10px] text-foreground/30 font-bold">{p.year}</span>
+              <h3 className="font-semibold text-foreground text-xl leading-tight mt-1">{p.title}</h3>
+              <p className="text-foreground/40 text-[10px] uppercase tracking-widest font-bold mt-2">View Project —&gt;</p>
             </div>
           </div>
-          <div className="px-5 pt-4 pb-5">
-            <span className="text-[10px] text-foreground/30 font-bold">{p.year}</span>
-            <h3 className="font-semibold text-foreground text-xl leading-tight mt-1">{p.title}</h3>
-            <p className="text-foreground/40 text-[10px] uppercase tracking-widest font-bold mt-2">View Project —&gt;</p>
-          </div>
+
+          <button
+            onClick={next}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-base font-bold shadow-lg active:scale-95 transition-all"
+          >
+            &#8594;
+          </button>
         </div>
 
-        {/* Next arrow */}
-        <button
-          onClick={next}
-          className="absolute -right-5 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-lg font-bold shadow-lg active:scale-95 transition-all"
-        >
-          &#8594;
-        </button>
+        <div className="flex gap-2 mt-8">
+          {PROJECTS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`rounded-full transition-all duration-300 ${i === current ? "bg-primary w-6 h-2" : "bg-foreground/20 w-2 h-2"}`}
+            />
+          ))}
+        </div>
+        <p className="text-foreground/25 text-xs uppercase tracking-widest mt-4">Swipe to browse</p>
       </div>
-
-      {/* Dots */}
-      <div className="flex gap-2 mt-8">
-        {PROJECTS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`rounded-full transition-all duration-300 ${i === current ? "bg-primary w-6 h-2" : "bg-foreground/20 w-2 h-2"}`}
-          />
-        ))}
-      </div>
-
-      {/* Swipe hint */}
-      <p className="text-foreground/25 text-xs uppercase tracking-widest mt-4">Swipe to browse</p>
     </section>
   )
 }
 
-// Full fan carousel for desktop
 function DesktopCarousel() {
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -405,33 +402,36 @@ function Experience() {
   return (
     <section
       ref={ref}
-      className="py-16 md:py-28 px-6 md:px-8 flex flex-col items-center transition-all duration-700"
+      className="py-16 md:py-28 flex flex-col items-center transition-all duration-700"
       style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(50px)" }}
     >
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-8 h-px bg-primary" />
-        <span className="text-xs uppercase tracking-widest text-primary">Background</span>
-        <div className="w-8 h-px bg-primary" />
-      </div>
-      <h2
-        className="font-bold tracking-tight mb-10 md:mb-14 text-foreground text-center"
-        style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontFamily: "var(--font-geist-sans)" }}
-      >
-        Experience
-      </h2>
-      <div className="w-full max-w-3xl flex flex-col">
-        {EXPERIENCE.map((e, i) => (
-          <div key={i} className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-2 md:gap-12 py-7 md:py-8 border-b border-foreground/5 last:border-none">
-            <div>
-              <p className="text-purple-500/60 text-xs font-bold uppercase tracking-wider">{e.period}</p>
-              <p className="text-foreground/60 text-sm mt-1 font-medium">{e.company}</p>
+      {/* Mobile: match navbar width. Desktop: full padding */}
+      <div className="w-full px-4 md:px-8 max-w-sm md:max-w-none mx-auto md:mx-0 flex flex-col items-center">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-8 h-px bg-primary" />
+          <span className="text-xs uppercase tracking-widest text-primary">Background</span>
+          <div className="w-8 h-px bg-primary" />
+        </div>
+        <h2
+          className="font-bold tracking-tight mb-10 md:mb-14 text-foreground text-center"
+          style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontFamily: "var(--font-geist-sans)" }}
+        >
+          Experience
+        </h2>
+        <div className="w-full md:max-w-3xl flex flex-col">
+          {EXPERIENCE.map((e, i) => (
+            <div key={i} className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-2 md:gap-12 py-7 md:py-8 border-b border-foreground/5 last:border-none">
+              <div>
+                <p className="text-purple-500/60 text-xs font-bold uppercase tracking-wider">{e.period}</p>
+                <p className="text-foreground/60 text-sm mt-1 font-medium">{e.company}</p>
+              </div>
+              <div className="mt-2 md:mt-0">
+                <h3 className="text-foreground font-semibold text-base md:text-lg mb-2">{e.role}</h3>
+                <p className="text-foreground/50 text-sm leading-relaxed">{e.desc}</p>
+              </div>
             </div>
-            <div className="mt-2 md:mt-0">
-              <h3 className="text-foreground font-semibold text-base md:text-lg mb-2">{e.role}</h3>
-              <p className="text-foreground/50 text-sm leading-relaxed">{e.desc}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -442,46 +442,43 @@ function Contact() {
   return (
     <section
       ref={ref}
-      className="py-16 md:py-28 px-6 md:px-8 flex flex-col items-center text-center transition-all duration-700"
+      className="py-16 md:py-28 flex flex-col items-center text-center transition-all duration-700"
       style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(50px)" }}
     >
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-8 h-px bg-primary" />
-        <span className="text-xs uppercase tracking-widest text-primary">Let&apos;s talk</span>
-        <div className="w-8 h-px bg-primary" />
+      {/* Mobile: match navbar width. Desktop: natural centering */}
+      <div className="w-full px-4 md:px-8 max-w-sm md:max-w-none mx-auto md:mx-0 flex flex-col items-center">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-8 h-px bg-primary" />
+          <span className="text-xs uppercase tracking-widest text-primary">Let&apos;s talk</span>
+          <div className="w-8 h-px bg-primary" />
+        </div>
+        <h2
+          className="font-bold tracking-tight mb-6 text-foreground"
+          style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontFamily: "var(--font-geist-sans)" }}
+        >
+          Got a project in mind?
+        </h2>
+        <p className="text-foreground/50 text-base md:text-lg leading-relaxed mb-10 max-w-md">
+          I&apos;m always open to new collaborations, internships, or just a good design conversation.
+        </p>
+        <Link
+          href="/contact"
+          className="inline-block px-8 py-4 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:opacity-85 transition-opacity"
+        >
+          Say hello &#8594;
+        </Link>
       </div>
-      <h2
-        className="font-bold tracking-tight mb-6 text-foreground"
-        style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontFamily: "var(--font-geist-sans)" }}
-      >
-        Got a project in mind?
-      </h2>
-      <p className="text-foreground/50 text-base md:text-lg leading-relaxed mb-10 max-w-md">
-        I&apos;m always open to new collaborations, internships, or just a good design conversation.
-      </p>
-      <Link
-        href="/contact"
-        className="inline-block px-8 py-4 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:opacity-85 transition-opacity"
-      >
-        Say hello &#8594;
-      </Link>
     </section>
   )
 }
-
-// ==========================================
-// 4. MAIN PAGE EXPORT
-// ==========================================
 
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Hero />
-      {/* Mobile: single-card swipeable carousel */}
       <div className="block md:hidden">
         <MobileCarousel />
       </div>
-      {/* Desktop: multi-card fan carousel */}
       <div className="hidden md:block">
         <DesktopCarousel />
       </div>

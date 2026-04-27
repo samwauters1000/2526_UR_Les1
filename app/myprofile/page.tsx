@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, ChangeEvent, MouseEvent } from "react";
-import { AiOutlineInfoCircle } from "react-icons/ai";
 
 export default function UserProfile() {
   const [user, setUser] = useState({
@@ -43,11 +42,6 @@ export default function UserProfile() {
     setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePrivacyChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setPrivacySettings((prev) => ({ ...prev, [name]: checked }));
-  };
-
   const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -65,10 +59,7 @@ export default function UserProfile() {
       setFeedback("Invalid email address");
       return;
     }
-    if (
-      passwordData.newPassword &&
-      passwordData.newPassword !== passwordData.confirmPassword
-    ) {
+    if (passwordData.newPassword && passwordData.newPassword !== passwordData.confirmPassword) {
       setFeedback("Passwords do not match");
       return;
     }
@@ -77,7 +68,9 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8 text-foreground">
+    /* Mobile: match navbar (px-4, max-w-sm). Desktop: max-w-4xl centered */
+    <div className="w-full px-4 max-w-sm mx-auto md:max-w-4xl md:px-6 py-8 space-y-8 text-foreground">
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">My Profile</h1>
@@ -107,7 +100,7 @@ export default function UserProfile() {
 
         {/* Profile Picture */}
         <div className="flex items-center gap-6 pt-4">
-          <div className="w-24 h-24 border-2 border-dashed rounded-full flex items-center justify-center overflow-hidden bg-muted">
+          <div className="w-24 h-24 border-2 border-dashed rounded-full flex items-center justify-center overflow-hidden bg-muted shrink-0">
             {user.profilePicture ? (
               <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
             ) : (

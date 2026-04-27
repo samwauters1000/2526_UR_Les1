@@ -8,16 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/toast"
 
-/**
- * FULL AUTH FLOW (UI ONLY)
- * - Login
- * - Register
- * - Forgot Password
- * - Reset Password
- *
- * Backend / API calls intentionally mocked.
- */
-
 export default function LoginPage() {
   const [loading, setLoading] = React.useState(false)
 
@@ -25,7 +15,6 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     try {
-      // Simulate network delay
       await new Promise((r) => setTimeout(r, 1200))
       toast.success(`${actionName} submitted successfully!`)
     } catch {
@@ -36,8 +25,8 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+    <main className="min-h-screen flex items-center justify-center bg-background px-4">
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Welcome</CardTitle>
           <CardDescription>
@@ -60,12 +49,10 @@ export default function LoginPage() {
                   <Label>Email</Label>
                   <Input type="email" placeholder="email@example.com" required />
                 </div>
-
                 <div className="space-y-2">
                   <Label>Password</Label>
                   <Input type="password" required />
                 </div>
-
                 <Button className="w-full" disabled={loading}>
                   {loading ? "Signing in..." : "Sign in"}
                 </Button>
@@ -79,17 +66,14 @@ export default function LoginPage() {
                   <Label>Email</Label>
                   <Input type="email" placeholder="email@example.com" required />
                 </div>
-
                 <div className="space-y-2">
                   <Label>Password</Label>
                   <Input type="password" required />
                 </div>
-
                 <div className="space-y-2">
                   <Label>Confirm Password</Label>
                   <Input type="password" required />
                 </div>
-
                 <Button className="w-full" disabled={loading}>
                   {loading ? "Creating account..." : "Create account"}
                 </Button>
@@ -103,7 +87,6 @@ export default function LoginPage() {
                   <Label>Email</Label>
                   <Input type="email" placeholder="email@example.com" required />
                 </div>
-
                 <Button variant="secondary" className="w-full" disabled={loading}>
                   {loading ? "Sending link..." : "Send reset link"}
                 </Button>
