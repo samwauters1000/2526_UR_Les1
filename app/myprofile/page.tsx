@@ -4,32 +4,13 @@ import React, { useState, ChangeEvent, MouseEvent } from "react";
 
 export default function UserProfile() {
   const [user, setUser] = useState({
-    name: "",
-    username: "",
-    email: "",
-    phone: "",
-    street: "",
-    city: "",
-    zipCode: "",
-    country: "",
+    name: "", username: "", email: "", phone: "",
+    street: "", city: "", zipCode: "", country: "",
     profilePicture: null as string | null,
-    linkedin: "",
-    twitter: "",
-    website: "",
-    twoFactor: false,
+    linkedin: "", twitter: "", website: "", twoFactor: false,
   });
 
-  const [passwordData, setPasswordData] = useState({
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-
-  const [privacySettings, setPrivacySettings] = useState({
-    profileVisible: false,
-    emailUpdates: false,
-  });
-
+  const [passwordData, setPasswordData] = useState({ oldPassword: "", newPassword: "", confirmPassword: "" });
   const [feedback, setFeedback] = useState("");
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,39 +25,26 @@ export default function UserProfile() {
 
   const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setUser((prev) => ({ ...prev, profilePicture: URL.createObjectURL(file) }));
-    }
+    if (file) setUser((prev) => ({ ...prev, profilePicture: URL.createObjectURL(file) }));
   };
 
-  const handlePhotoRemove = () => {
-    setUser((prev) => ({ ...prev, profilePicture: null }));
-  };
+  const handlePhotoRemove = () => setUser((prev) => ({ ...prev, profilePicture: null }));
 
   const handleSave = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (user.email && !user.email.includes("@")) {
-      setFeedback("Invalid email address");
-      return;
-    }
-    if (passwordData.newPassword && passwordData.newPassword !== passwordData.confirmPassword) {
-      setFeedback("Passwords do not match");
-      return;
-    }
+    if (user.email && !user.email.includes("@")) { setFeedback("Invalid email address"); return; }
+    if (passwordData.newPassword && passwordData.newPassword !== passwordData.confirmPassword) { setFeedback("Passwords do not match"); return; }
     setFeedback("Changes saved successfully!");
     setTimeout(() => setFeedback(""), 3000);
   };
 
   return (
-    /* Mobile: match navbar (px-4, max-w-sm). Desktop: max-w-4xl centered */
-    <div className="w-full px-4 max-w-sm mx-auto md:max-w-4xl md:px-6 py-8 space-y-8 text-foreground">
-
-      {/* Header */}
+    /* px-4 on mobile matches the navbar outer wrapper exactly */
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8 text-foreground">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">My Profile</h1>
       </div>
 
-      {/* 1. User Information */}
       <section className="p-6 border rounded-xl shadow-sm space-y-4 bg-card">
         <h2 className="text-2xl font-semibold">User Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -98,27 +66,20 @@ export default function UserProfile() {
           </div>
         </div>
 
-        {/* Profile Picture */}
         <div className="flex items-center gap-6 pt-4">
           <div className="w-24 h-24 border-2 border-dashed rounded-full flex items-center justify-center overflow-hidden bg-muted shrink-0">
-            {user.profilePicture ? (
-              <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-xs text-muted-foreground text-center px-2">No Image</span>
-            )}
+            {user.profilePicture
+              ? <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+              : <span className="text-xs text-muted-foreground text-center px-2">No Image</span>
+            }
           </div>
           <div className="flex flex-col gap-2">
             <input type="file" accept="image/*" onChange={handlePhotoUpload} className="text-sm cursor-pointer" />
-            {user.profilePicture && (
-              <button onClick={handlePhotoRemove} className="text-xs text-red-500 hover:underline text-left">
-                Remove Photo
-              </button>
-            )}
+            {user.profilePicture && <button onClick={handlePhotoRemove} className="text-xs text-red-500 hover:underline text-left">Remove Photo</button>}
           </div>
         </div>
       </section>
 
-      {/* 2. Security */}
       <section className="p-6 border rounded-xl shadow-sm space-y-4 bg-card">
         <h2 className="text-2xl font-semibold">Account Security</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -133,20 +94,14 @@ export default function UserProfile() {
         </div>
       </section>
 
-      {/* Status Messages */}
       {feedback && (
         <div className={`p-4 rounded-lg text-center font-medium ${feedback.includes("successfully") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
           {feedback}
         </div>
       )}
 
-      {/* Footer Actions */}
       <div className="flex justify-end pt-4">
-        <button
-          type="button"
-          onClick={handleSave}
-          className="bg-blue-600 text-white px-8 py-2.5 rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-md"
-        >
+        <button type="button" onClick={handleSave} className="bg-blue-600 text-white px-8 py-2.5 rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-md">
           Save Changes
         </button>
       </div>

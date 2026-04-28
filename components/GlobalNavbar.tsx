@@ -11,6 +11,12 @@ export default function GlobalNavbar() {
   const [isHoveringNav, setIsHoveringNav] = useState(false)
   const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // ─── SLUIT NAVIGATIE BIJ ROUTE CHANGE ───
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
+
+  // ─── SCROLL HANDLER ───
   useEffect(() => {
     const handleScroll = () => {
       setIsAtTop(window.scrollY < 10)
@@ -38,7 +44,7 @@ export default function GlobalNavbar() {
         top: 0,
         behavior: "smooth",
       })
-      setIsOpen(false) // Close mobile menu if open
+      setIsOpen(false)
     }
   }
 
@@ -119,10 +125,10 @@ export default function GlobalNavbar() {
               {/* Block 1 — Navigation */}
               <div style={{ borderRadius: "1.5rem" }} className="bg-[#2A2D3A] border border-[#3A3D50] shadow-lg p-3 flex flex-col gap-1">
                 <p className="text-[#E8ECED]/30 text-xs uppercase tracking-widest px-4 pt-1 pb-0.5">Navigation</p>
-                <Link href="/" onClick={(e) => handleNavLinkClick(e, "/")} className="text-[#E8ECED]/70 hover:text-[#7217E8] px-4 py-2.5 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">Home</Link>
-                <Link href="/about" onClick={(e) => handleNavLinkClick(e, "/about")} className="text-[#E8ECED]/70 hover:text-[#7217E8] px-4 py-2.5 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">About</Link>
-                <Link href="/projecten" onClick={(e) => handleNavLinkClick(e, "/projecten")} className="text-[#E8ECED]/70 hover:text-[#7217E8] px-4 py-2.5 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">Projects</Link>
-                <Link href="/contact" onClick={(e) => handleNavLinkClick(e, "/contact")} className="bg-[#7217E8] hover:bg-[#5e12c4] text-[#E8ECED] px-4 py-2.5 rounded-full transition-colors text-sm tracking-wide uppercase text-center mt-1">Contact</Link>
+                <Link href="/" className="text-[#E8ECED]/70 hover:text-[#7217E8] px-4 py-2.5 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">Home</Link>
+                <Link href="/about" className="text-[#E8ECED]/70 hover:text-[#7217E8] px-4 py-2.5 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">About</Link>
+                <Link href="/projecten" className="text-[#E8ECED]/70 hover:text-[#7217E8] px-4 py-2.5 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">Projects</Link>
+                <Link href="/contact" className="bg-[#7217E8] hover:bg-[#5e12c4] text-[#E8ECED] px-4 py-2.5 rounded-full transition-colors text-sm tracking-wide uppercase text-center mt-1">Contact</Link>
               </div>
 
               {/* Mobile divider */}
@@ -134,9 +140,9 @@ export default function GlobalNavbar() {
 
               {/* Block 2 — Utility */}
               <div style={{ borderRadius: "1.5rem" }} className="bg-[#1a1a2e] border border-[#3A3D50] shadow-inner p-3 flex flex-col gap-1">
-                <Link href="/login" onClick={(e) => handleNavLinkClick(e, "/login")} className="text-[#E8ECED]/40 hover:text-[#E8ECED]/70 px-4 py-2 rounded-full hover:bg-white/10 transition-colors text-xs tracking-wide uppercase">Login</Link>
-                <Link href="/myprofile" onClick={(e) => handleNavLinkClick(e, "/myprofile")} className="text-[#E8ECED]/40 hover:text-[#E8ECED]/70 px-4 py-2 rounded-full hover:bg-white/10 transition-colors text-xs tracking-wide uppercase">My Profile</Link>
-                <Link href="/admin" onClick={(e) => handleNavLinkClick(e, "/admin")} className="bg-[#E63946] hover:bg-[#c42d38] text-[#E8ECED] px-4 py-2 rounded-full transition-colors text-xs tracking-wide uppercase text-center">Admin</Link>
+                <Link href="/login" className="text-[#E8ECED]/40 hover:text-[#E8ECED]/70 px-4 py-2 rounded-full hover:bg-white/10 transition-colors text-xs tracking-wide uppercase">Login</Link>
+                <Link href="/myprofile" className="text-[#E8ECED]/40 hover:text-[#E8ECED]/70 px-4 py-2 rounded-full hover:bg-white/10 transition-colors text-xs tracking-wide uppercase">My Profile</Link>
+                <Link href="/admin" className="bg-[#E63946] hover:bg-[#c42d38] text-[#E8ECED] px-4 py-2 rounded-full transition-colors text-xs tracking-wide uppercase text-center">Admin</Link>
               </div>
 
             </div>
