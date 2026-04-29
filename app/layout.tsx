@@ -3,6 +3,8 @@ import { AppToaster } from "@/components/ui/toast"
 import GlobalNavbar from "@/components/GlobalNavbar"
 import Footer from "@/components/Footer"
 import ClientCursor from "@/components/ClientCursor" 
+
+import Script from "next/script"
 import GoogleAnalyticsTracker from "@/components/GoogleAnalyticsTracker"
 
 import "./globals.css"
@@ -22,17 +24,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen overflow-x-hidden">
-        {/* De ClientCursor wordt hier aangeroepen */}
+      <body className="flex flex-col min-h-screen">
         <ClientCursor />
-        
         <GoogleAnalyticsTracker />
         <GlobalNavbar />
 
-        {/* pt-20 on mobile adds space between nav and content */}
-        <main className="flex-1 w-full pt-20 md:pt-28">
+        <div className="flex-1 w-full mt-6 md:mt-10">
           {children}
-        </main>
+        </div>
 
         <Footer />
         <AppToaster />
