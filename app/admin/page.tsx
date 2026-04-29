@@ -25,7 +25,6 @@ export default function AdminPage() {
 
   const [search, setSearch] = useState("");
   const [editMode, setEditMode] = useState(false);
-
   const [userCount, setUserCount] = useState("1,234");
   const [activeSessions, setActiveSessions] = useState("87");
   const [activities, setActivities] = useState([
@@ -34,7 +33,6 @@ export default function AdminPage() {
     "New user registered",
   ]);
   const [alertText, setAlertText] = useState("Alert: System error during last backup");
-
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editedUser, setEditedUser] = useState<User | null>(null);
   const [errors, setErrors] = useState<Errors>({});
@@ -76,132 +74,96 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-10">
+    <div className="w-full max-w-sm mx-auto md:max-w-7xl md:mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-12 space-y-6 text-gray-200">
 
-      {/* Title + Edit toggle button */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+      {/* Header & Edit Button */}
+      <div className="flex items-center justify-between gap-4 border-b border-[#3A3D50] pb-6">
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">Admin Dashboard</h1>
         <button
           onClick={() => setEditMode((prev) => !prev)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            backgroundColor: editMode ? "#16a34a" : "#7217E8",
-            color: "#E8ECED",
-            padding: "10px 20px",
-            borderRadius: "0.75rem",
-            fontWeight: 600,
-            fontSize: "0.95rem",
-            border: "none",
-            cursor: "pointer",
-            boxShadow: editMode
-              ? "0 4px 14px rgba(22,163,74,0.4)"
-              : "0 4px 14px rgba(114,23,232,0.45)",
-            transition: "background-color 0.2s ease, box-shadow 0.2s ease",
-          }}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all shadow-lg active:scale-95 ${
+            editMode ? "bg-green-600 shadow-green-900/20" : "bg-[#7217E8] shadow-[#7217E8]/20"
+          }`}
         >
-          {editMode ? <FiCheck size={16} /> : <FiEdit2 size={16} />}
-          {editMode ? "Save Changes" : "Edit Dashboard"}
+          {editMode ? <FiCheck size={14} /> : <FiEdit2 size={14} />}
+          {editMode ? "Save" : "Edit"}
         </button>
       </div>
 
-      {/* 1. Dashboard / Overview */}
-      <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Dashboard Overview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 border rounded bg-gray-50">
-            <p className="text-gray-500">Total Users</p>
+      {/* 1. Dashboard Overview */}
+      <section className="p-5 md:p-6 border border-[#3A3D50] rounded-2xl shadow-xl bg-card space-y-4">
+        <span className="text-[10px] tracking-[0.25em] uppercase text-[#7217E8] font-bold">Dashboard Overview</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+          <div className="p-4 border border-[#3A3D50] rounded-xl bg-background/50">
+            <p className="text-[10px] uppercase text-gray-500 font-bold tracking-widest mb-1">Total Users</p>
             {editMode ? (
-              <input
-                value={userCount}
-                onChange={(e) => setUserCount(e.target.value)}
-                className="text-2xl font-bold w-full border-b border-primary bg-transparent outline-none"
-              />
+              <input value={userCount} onChange={(e) => setUserCount(e.target.value)} className="text-2xl font-bold w-full border-b border-[#7217E8] bg-transparent outline-none text-white" />
             ) : (
-              <p className="text-2xl font-bold">{userCount}</p>
+              <p className="text-2xl font-bold text-white">{userCount}</p>
             )}
           </div>
-          <div className="p-4 border rounded bg-gray-50">
-            <p className="text-gray-500">Active Sessions</p>
+          <div className="p-4 border border-[#3A3D50] rounded-xl bg-background/50">
+            <p className="text-[10px] uppercase text-gray-500 font-bold tracking-widest mb-1">Active Sessions</p>
             {editMode ? (
-              <input
-                value={activeSessions}
-                onChange={(e) => setActiveSessions(e.target.value)}
-                className="text-2xl font-bold w-full border-b border-primary bg-transparent outline-none"
-              />
+              <input value={activeSessions} onChange={(e) => setActiveSessions(e.target.value)} className="text-2xl font-bold w-full border-b border-[#7217E8] bg-transparent outline-none text-white" />
             ) : (
-              <p className="text-2xl font-bold">{activeSessions}</p>
+              <p className="text-2xl font-bold text-white">{activeSessions}</p>
             )}
           </div>
-          <div className="p-4 border rounded bg-gray-50">
-            <p className="text-gray-500">Recent Activities</p>
-            <ul className="list-disc ml-5 space-y-1">
+          <div className="p-4 border border-[#3A3D50] rounded-xl bg-background/50">
+            <p className="text-[10px] uppercase text-gray-500 font-bold tracking-widest mb-1">Recent Activities</p>
+            <ul className="space-y-1">
               {activities.map((a, i) =>
                 editMode ? (
-                  <input
-                    key={i}
-                    value={a}
-                    onChange={(e) => updateActivity(i, e.target.value)}
-                    className="w-full border-b border-primary bg-transparent outline-none text-sm"
-                  />
+                  <input key={i} value={a} onChange={(e) => updateActivity(i, e.target.value)} className="w-full border-b border-[#3A3D50] bg-transparent outline-none text-xs text-gray-300" />
                 ) : (
-                  <li key={i}>{a}</li>
+                  <li key={i} className="text-xs text-gray-400">• {a}</li>
                 )
               )}
             </ul>
           </div>
         </div>
-        <div className="mt-4 p-4 border rounded bg-yellow-50 flex items-center space-x-2">
-          <AiOutlineWarning className="text-yellow-600 shrink-0" />
+        <div className="mt-2 p-4 border border-yellow-500/20 rounded-xl bg-yellow-500/5 flex items-center space-x-3">
+          <AiOutlineWarning className="text-yellow-500 shrink-0" />
           {editMode ? (
-            <input
-              value={alertText}
-              onChange={(e) => setAlertText(e.target.value)}
-              className="w-full border-b border-yellow-500 bg-transparent outline-none"
-            />
+            <input value={alertText} onChange={(e) => setAlertText(e.target.value)} className="w-full border-b border-yellow-500/40 bg-transparent outline-none text-xs text-yellow-200" />
           ) : (
-            <p>{alertText}</p>
+            <p className="text-xs text-yellow-200/80">{alertText}</p>
           )}
         </div>
       </section>
 
       {/* 2. User Management */}
-      <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">User Management</h2>
+      <section className="p-5 md:p-6 border border-[#3A3D50] rounded-2xl shadow-xl bg-card space-y-4">
+        <span className="text-[10px] tracking-[0.25em] uppercase text-[#7217E8] font-bold">User Management</span>
         <input
           type="text"
           placeholder="Search users..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="w-full border border-[#3A3D50] bg-background/50 rounded-xl px-4 py-2 text-sm outline-none focus:border-[#7217E8] transition-colors"
         />
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse mt-2">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="p-2 border">Name</th>
-                <th className="p-2 border">Role</th>
-                <th className="p-2 border">Status</th>
-                <th className="p-2 border">Actions</th>
+        <div className="overflow-x-auto rounded-xl border border-[#3A3D50]">
+          <table className="w-full text-left text-[11px] md:text-xs">
+            <thead className="bg-white/5 text-gray-400 uppercase tracking-tighter">
+              <tr>
+                <th className="p-3 font-bold">Name</th>
+                <th className="p-3 font-bold">Role</th>
+                <th className="p-3 font-bold">Status</th>
+                <th className="p-3 font-bold text-right">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#3A3D50]">
               {filteredUsers.map((u) => (
-                <tr key={u.id} className="hover:bg-gray-50">
-                  <td className="p-2 border">{u.name}</td>
-                  <td className="p-2 border capitalize">{u.role}</td>
-                  <td className="p-2 border">{u.active ? "Active" : "Inactive"}</td>
-                  <td className="p-2 border space-x-2">
-                    <button onClick={() => handleEdit(u)} className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">
-                      Edit
-                    </button>
-                    <button className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
-                      Reset Password
-                    </button>
-                    <button className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm">
-                      Block
-                    </button>
+                <tr key={u.id} className="hover:bg-white/5 transition-colors">
+                  <td className="p-3 text-gray-200 font-medium">{u.name}</td>
+                  <td className="p-3"><span className="text-[#7217E8] font-bold">{u.role}</span></td>
+                  <td className="p-3 text-gray-400">{u.active ? "Active" : "Inactive"}</td>
+                  <td className="p-3 text-right">
+                    <div className="flex justify-end gap-1.5">
+                      <button onClick={() => handleEdit(u)} className="p-1.5 bg-yellow-500/10 text-yellow-500 rounded-lg"><FiEdit2 size={12} /></button>
+                      <button className="px-2 py-1 bg-white/5 text-gray-400 rounded-lg font-bold uppercase text-[9px]">Block</button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -210,104 +172,65 @@ export default function AdminPage() {
         </div>
       </section>
 
-      {/* 3. Content Management */}
-      <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Content Management</h2>
-        <div className="flex flex-wrap gap-4">
-          <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-            <FiFileText /> <span>New Article</span>
-          </button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Manage Media</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Categories & Tags</button>
-        </div>
-      </section>
+      {/* Grid for Small Sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* 3. Content Management */}
+        <section className="p-5 border border-[#3A3D50] rounded-2xl bg-card space-y-4">
+          <span className="text-[10px] tracking-[0.25em] uppercase text-[#7217E8] font-bold">Content</span>
+          <div className="flex flex-wrap gap-2">
+            <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest">
+              <FiFileText /> <span>New Article</span>
+            </button>
+            <button className="px-4 py-2 bg-white/5 border border-[#3A3D50] rounded-xl text-[10px] font-bold uppercase tracking-widest text-gray-300">Media</button>
+          </div>
+        </section>
 
-      {/* 4. Settings / Configuration */}
-      <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Settings & Configuration</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Site Settings</p><p className="text-sm text-gray-600">Name, logo, contact details</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Email Templates</p><p className="text-sm text-gray-600">Configure notifications</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Integrations</p><p className="text-sm text-gray-600">API keys, external tools</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Payment Settings</p><p className="text-sm text-gray-600">Manage subscriptions</p></div>
-        </div>
-      </section>
+        {/* 4. Settings */}
+        <section className="p-5 border border-[#3A3D50] rounded-2xl bg-card space-y-4">
+          <span className="text-[10px] tracking-[0.25em] uppercase text-[#7217E8] font-bold">Settings</span>
+          <div className="grid grid-cols-2 gap-2">
+            {["Site Settings", "Templates", "API Keys", "Payments"].map((item) => (
+              <div key={item} className="p-2 border border-[#3A3D50] rounded-lg bg-background/30 text-[10px] font-bold text-gray-400">{item}</div>
+            ))}
+          </div>
+        </section>
 
-      {/* 5. Security & Access */}
-      <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Security & Access</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Roles & Permissions</p><p className="text-sm text-gray-600">Configure per section</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Two-Factor Authentication</p><p className="text-sm text-gray-600">Mandatory for admins</p></div>
-          <div className="border p-4 rounded bg-gray-50"><p className="font-medium">Audit Log</p><p className="text-sm text-gray-600">Overview of admin activities</p></div>
-        </div>
-      </section>
-
-      {/* 6. Data & Reports */}
-      <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Data & Reports</h2>
-        <div className="flex flex-wrap gap-4">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Export User Data</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Charts & Reports</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Create/Restore Backups</button>
-        </div>
-      </section>
-
-      {/* 7. Efficiency Tools */}
-      <section className="p-6 border rounded shadow-md space-y-4">
-        <h2 className="text-2xl font-semibold">Efficiency Tools</h2>
-        <div className="flex flex-wrap gap-4">
-          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Bulk Actions</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Search & Filter</button>
-          <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Notifications</button>
-        </div>
-      </section>
+        {/* 5. Security */}
+        <section className="p-5 border border-[#3A3D50] rounded-2xl bg-card space-y-4">
+          <span className="text-[10px] tracking-[0.25em] uppercase text-[#7217E8] font-bold">Security</span>
+          <div className="space-y-2">
+            <div className="p-2 border border-[#3A3D50] rounded-lg bg-background/30 text-[10px] font-bold text-gray-400">Two-Factor Auth</div>
+            <div className="p-2 border border-[#3A3D50] rounded-lg bg-background/30 text-[10px] font-bold text-gray-400">Audit Logs</div>
+          </div>
+        </section>
+      </div>
 
       {/* Edit User Modal */}
       {selectedUser && editedUser && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-6">
-          <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-4">
-            <h2 className="text-2xl font-bold">Edit User</h2>
-            <div>
-              <label className="block text-sm font-medium mb-1">Name</label>
-              <input
-                name="name"
-                value={editedUser.name}
-                onChange={handleUserChange}
-                className="w-full border rounded-xl px-4 py-2"
-              />
-              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-6">
+          <div className="bg-[#1a1a2e] border border-[#3A3D50] w-full max-w-md rounded-3xl shadow-2xl p-6 md:p-8 space-y-6">
+            <h2 className="text-xl font-bold text-white tracking-tight">Edit User</h2>
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Name</label>
+                <input name="name" value={editedUser.name} onChange={handleUserChange} className="w-full bg-background/50 border border-[#3A3D50] rounded-xl px-4 py-2.5 text-sm outline-none text-white focus:border-[#7217E8]" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Role</label>
+                <select name="role" value={editedUser.role} onChange={handleUserChange} className="w-full bg-background/50 border border-[#3A3D50] rounded-xl px-4 py-2.5 text-sm outline-none text-white">
+                  <option value="user">User</option>
+                  <option value="editor">Editor</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-2 p-3 bg-white/5 rounded-xl border border-[#3A3D50]">
+                <input type="checkbox" checked={editedUser.active} onChange={(e) => setEditedUser((prev) => prev ? { ...prev, active: e.target.checked } : prev)} className="w-4 h-4 rounded border-[#3A3D50] bg-transparent text-[#7217E8]" />
+                <label className="text-sm font-medium text-gray-300">Active Account</label>
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Role</label>
-              <select
-                name="role"
-                value={editedUser.role}
-                onChange={handleUserChange}
-                className="w-full border rounded-xl px-4 py-2"
-              >
-                <option value="user">User</option>
-                <option value="editor">Editor</option>
-                <option value="admin">Admin</option>
-              </select>
-              {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="active"
-                checked={editedUser.active}
-                onChange={(e) => setEditedUser((prev) => prev ? { ...prev, active: e.target.checked } : prev)}
-              />
-              <label htmlFor="active" className="text-sm font-medium">Active</label>
-            </div>
-            <div className="flex gap-4 pt-2">
-              <button onClick={handleUserSave} className="px-6 py-2 rounded-xl bg-green-600 text-white hover:opacity-90 transition">
-                Save
-              </button>
-              <button onClick={() => { setSelectedUser(null); setErrors({}); }} className="px-6 py-2 rounded-xl bg-gray-600 text-white hover:opacity-90 transition">
-                Cancel
-              </button>
+            <div className="flex gap-3 pt-2">
+              <button onClick={handleUserSave} className="flex-1 py-3 rounded-xl bg-[#7217E8] text-white font-bold text-xs uppercase tracking-widest">Save</button>
+              <button onClick={() => { setSelectedUser(null); setErrors({}); }} className="px-6 py-3 rounded-xl bg-white/5 text-gray-400 font-bold text-xs uppercase tracking-widest border border-[#3A3D50]">Cancel</button>
             </div>
           </div>
         </div>

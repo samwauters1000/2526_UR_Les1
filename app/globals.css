@@ -1,12 +1,12 @@
-/* 1. Alle imports MOETEN helemaal bovenaan staan */
+/* 1. Imports */
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 @import "tw-animate-css";
 
-/* 2. Custom variant definities */
+/* 2. Custom variant */
 @custom-variant dark (&:is(.dark *));
 
-/* 3. Theme configuratie voor Tailwind v4 */
+/* 3. Theme */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -22,7 +22,7 @@
   --radius-lg: var(--radius);
 }
 
-/* 4. Root variabelen */
+/* 4. Root variables */
 :root {
   --background: #1E202C;
   --foreground: #E8ECED;
@@ -32,7 +32,6 @@
   --ring: #7217E8;
   --radius: 8px;
 
-  /* Sidebar */
   --sidebar: #2A2D3A;
   --sidebar-foreground: #E8ECED;
   --sidebar-accent: #7217E8;
@@ -40,20 +39,12 @@
 
 /* 5. Base styles */
 @layer base {
-  *, html, body {
-    cursor: none !important;
-  }
-
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-geist-sans);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-  }
-
-  a, button, [role="button"], .cursor-pointer, input, select, textarea {
-    cursor: none !important;
   }
 
   input, textarea, select {
@@ -64,12 +55,23 @@
   }
 }
 
-/* 6. Vector Cursor (Kleiner gemaakt naar 18px) */
+/* 6. Custom cursor — desktop only */
+@media (pointer: fine) {
+  *, html, body {
+    cursor: none !important;
+  }
+
+  a, button, [role="button"], .cursor-pointer, input, select, textarea {
+    cursor: none !important;
+  }
+}
+
+/* 7. Cursor component */
 .cursor-container {
   position: fixed;
   top: 0;
   left: 0;
-  width: 18px; /* Kleiner formaat zoals gevraagd */
+  width: 18px;
   height: 18px;
   pointer-events: none;
   z-index: 999999;
@@ -77,15 +79,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* Positie via JS variabelen */
   transform: translate3d(
     calc(var(--mouse-x, 0) * 1px), 
     calc(var(--mouse-y, 0) * 1px), 
     0
   );
-  
-  /* Directe volging */
   transition: transform 0.02s linear;
 }
 
@@ -97,7 +95,7 @@
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4));
 }
 
-/* 7. Extra Utilities & Animaties */
+/* 8. Utilities */
 .sidebar {
   background-color: var(--sidebar);
   color: var(--sidebar-foreground);
