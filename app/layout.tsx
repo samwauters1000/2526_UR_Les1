@@ -29,7 +29,8 @@ export default function RootLayout({
         <GoogleAnalyticsTracker />
         <GlobalNavbar />
 
-        <div className="flex-1 w-full mt-6 md:mt-10">
+        {/* pt-28 mobile geeft meer ruimte onder de fixed navbar */}
+        <div className="flex-1 w-full pt-28 md:pt-24">
           {children}
         </div>
 

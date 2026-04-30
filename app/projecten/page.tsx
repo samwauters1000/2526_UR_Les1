@@ -208,8 +208,8 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      {/* Verlaagde padding-top en kleinere gaps */}
-      <div className="w-full px-4 max-w-sm mx-auto md:max-w-4xl md:px-6 pt-16 pb-24 flex flex-col gap-16 md:gap-24">
+      {/* pt-16 verwijderd — layout.tsx regelt de spacing via pt-24 */}
+      <div className="w-full px-4 max-w-sm mx-auto md:max-w-4xl md:px-6 pb-24 flex flex-col gap-16 md:gap-24">
         {/* HEADER */}
         <header
           ref={(el) => { itemsRef.current[0] = el; }}
@@ -220,7 +220,7 @@ export default function ProjectsPage() {
             <span className="text-xs uppercase tracking-widest text-primary font-bold">Portfolio</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">
-            Projects
+            Project's
           </h1>
         </header>
 

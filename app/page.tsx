@@ -150,11 +150,12 @@ function MainCarousel() {
 
 function Hero() {
   return (
-    <section 
-      className="relative flex flex-col md:flex-row pt-16 md:pt-0 pb-4 md:pb-0" 
-      style={{ minHeight: "auto" }} // Mobile hoogte aangepast, desktop blijft flexibel
+    // Geen pt meer nodig — layout.tsx regelt de spacing via pt-24
+    <section
+      className="relative flex flex-col md:flex-row pb-4 md:pb-0"
+      style={{ minHeight: "auto" }}
     >
-
+      {/* Mobile profile image */}
       <div className="block md:hidden w-full relative overflow-hidden" style={{ height: "180px" }}>
         <div style={{ position: "absolute", inset: 0, background: "rgba(30,32,44,0.25)", zIndex: 1 }} />
         <img
@@ -174,6 +175,7 @@ function Hero() {
         />
       </div>
 
+      {/* Desktop profile image */}
       <div
         className="hidden md:block"
         style={{
@@ -184,12 +186,13 @@ function Hero() {
           backgroundSize: "70%",
           backgroundPosition: "110% 30%",
           backgroundRepeat: "no-repeat",
-          minHeight: "calc(100vh - 200px)" // Desktop behoudt de ruimte
+          minHeight: "calc(100vh - 200px)",
         }}
       >
         <div style={{ position: "absolute", inset: 0, background: "rgba(30,32,44,0.25)" }} />
       </div>
 
+      {/* Text content */}
       <div
         className="relative flex flex-col justify-start md:justify-center overflow-hidden px-4 pt-6 pb-2 md:pl-24 md:pr-12 md:py-0 xl:pl-100 xl:pr-20"
         style={{ flex: 1 }}

@@ -76,7 +76,7 @@ export default function GlobalNavbar() {
           </Link>
           <Link href="/" onClick={(e) => handleNavLinkClick(e, "/")} className="text-[#E8ECED]/70 hover:text-[#7217E8] px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">Home</Link>
           <Link href="/about" onClick={(e) => handleNavLinkClick(e, "/about")} className="text-[#E8ECED]/70 hover:text-[#7217E8] px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">About</Link>
-          <Link href="/projecten" onClick={(e) => handleNavLinkClick(e, "/projecten")} className="text-[#E8ECED]/70 hover:text-[#7217E8] px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">Projecten</Link>
+          <Link href="/projecten" onClick={(e) => handleNavLinkClick(e, "/projecten")} className="text-[#E8ECED]/70 hover:text-[#7217E8] px-3 py-1 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide uppercase">Project's</Link>
           <Link href="/contact" onClick={(e) => handleNavLinkClick(e, "/contact")} className="bg-[#7217E8] hover:bg-[#5e12c4] text-[#E8ECED] px-5 py-2 rounded-full transition-colors text-sm tracking-wide uppercase ml-2">Contact</Link>
         </nav>
 
