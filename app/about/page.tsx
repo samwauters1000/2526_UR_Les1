@@ -25,9 +25,9 @@ const EXPERIENCE = [
 
 export default function About() {
   return (
-    <section className="min-h-screen pb-16 text-gray-300">
+    <section className="min-h-screen pb-16 text-gray-300 text-center md:text-left">
       {/* Mobile: max-w-sm mx-auto px-4 centreert de content met dezelfde marges als de navbar */}
-      <div className="w-full max-w-sm mx-auto px-4 md:max-w-5xl md:px-6 lg:px-8 md:pt-8 animate-in fade-in slide-in-from-bottom duration-700">
+      <div className="w-full max-w-[320px] mx-auto px-0 md:max-w-5xl md:px-6 md:px-6 lg:px-8 md:pt-8 animate-in fade-in slide-in-from-bottom duration-700">
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center mb-16 md:mb-20">
           <div>

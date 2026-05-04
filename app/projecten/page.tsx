@@ -90,7 +90,7 @@ const projects = [
     title: "In the works...",
     type: "image",
     file: "/images/studio-lux.jpg",
-    tag: "Studio Lux",
+    tag: "In the works...",
     description: "Dit project is momenteel in ontwikkeling. Meer details volgen binnenkort. Stay tuned voor updates over dit nieuwe werk.",
   },
 ];
@@ -120,7 +120,7 @@ export default function ProjectsPage() {
   }, []);
 
   return (
-    <main className="min-h-screen text-foreground bg-background">
+    <main className="min-h-screen text-foreground bg-background text-center md:text-left">
       {overlay && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setOverlay(null)}>
           <div className="relative w-[90vw] h-[85vh] flex items-center justify-center">
@@ -134,10 +134,9 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      {/* Mobile: max-w-sm mx-auto px-4 centreert de content met dezelfde marges als de navbar. Desktop: max-w-4xl md:px-6. */}
-      <div className="w-full max-w-sm mx-auto px-4 md:max-w-4xl md:px-6 pb-24 flex flex-col gap-16 md:gap-24">
+      <div className="w-full max-w-[320px] mx-auto px-0 md:max-w-4xl md:px-6 pb-24 flex flex-col gap-16 md:gap-24">
         <header ref={(el) => { itemsRef.current[0] = el; }} className="opacity-0 translate-y-[20px] mb-4">
-          <div className="flex items-center gap-4 mb-2">
+          <div className="flex items-center gap-4 mb-2 justify-center md:justify-start">
             <div className="w-8 h-px bg-primary" />
             <span className="text-xs uppercase tracking-widest text-primary font-bold">Portfolio</span>
           </div>
@@ -151,19 +150,30 @@ export default function ProjectsPage() {
             className={`flex flex-col md:flex-row gap-6 md:gap-12 items-center opacity-0 translate-y-[20px] ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}
           >
             <div className="w-full md:w-1/2 flex flex-col items-center">
-              <div className="w-full relative group">
+              <div className="w-full relative group flex justify-center md:block">
                 {project.type === "pdf" ? (
                   <PDFViewer file={project.file} />
                 ) : (
-                  <div className="overflow-hidden rounded-sm shadow-xl w-full aspect-square bg-foreground/5 md:cursor-zoom-in" onClick={() => setOverlay(project.file)}>
-                    <img src={project.file} className="w-full h-full grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105 object-cover" alt={project.title} />
+                  <div className="overflow-hidden rounded-sm shadow-xl bg-foreground/5 md:cursor-zoom-in inline-block md:w-full" onClick={() => setOverlay(project.file)}>
+                    <img
+                      src={project.file}
+                      className="w-auto max-h-[220px] mx-auto object-contain transition-all duration-700 hover:scale-105"
+                      alt={project.title}
+                    />
                   </div>
                 )}
               </div>
-              <button onClick={() => setOverlay(project.file)} className="mt-4 flex items-center gap-4 group/btn">
-                <div className="w-8 h-[1px] bg-foreground/30 group-hover/btn:w-12 group-hover/btn:bg-primary transition-all duration-500" />
-                <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/40 group-hover/btn:text-foreground transition-colors duration-500 font-bold">
-                  {project.type === "pdf" ? "Open Full PDF" : "Full view"}
+              
+              <button 
+                onClick={() => setOverlay(project.file)} 
+                className="mt-6 flex items-center gap-4 group/btn mx-auto md:mx-0 h-4"
+              >
+                {/* De lijn staat nu in een flex container met h-4 en items-center */}
+                <div className="w-8 h-px bg-foreground/30 group-hover/btn:w-12 group-hover/btn:bg-primary transition-all duration-500" />
+                
+                {/* leading-none zorgt dat er geen extra ruimte boven/onder de tekst zit */}
+                <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/40 group-hover/btn:text-foreground transition-colors duration-500 font-bold leading-none inline-flex items-center">
+                  {project.type === "pdf" ? "Navigate with arrows through PDF" : "Click For Full view"}
                 </span>
               </button>
             </div>

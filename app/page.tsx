@@ -151,10 +151,10 @@ function MainCarousel() {
 function Hero() {
   return (
     <section
-      className="relative flex flex-col items-center md:items-stretch md:flex-row pb-4 md:pb-0"
+      className="relative flex flex-col md:flex-row pb-4 md:pb-0"
       style={{ minHeight: "auto" }}
     >
-      {/* Mobile profile image — volle breedte */}
+      {/* Mobile profile image — volle breedte, geen padding */}
       <div className="block md:hidden w-full relative overflow-hidden" style={{ height: "180px" }}>
         <div style={{ position: "absolute", inset: 0, background: "rgba(30,32,44,0.25)", zIndex: 1 }} />
         <img
@@ -191,9 +191,15 @@ function Hero() {
         <div style={{ position: "absolute", inset: 0, background: "rgba(30,32,44,0.25)" }} />
       </div>
 
-      {/* Text content */}
+      {/* Text content
+          MOBILE: px-4 links en rechts geeft dezelfde marge als de navbar.
+                  De section is flex-col dus de div pakt volle breedte — px-4 is genoeg.
+          DESKTOP: pl-24 zoals origineel, px-4 wordt overschreven door md:px-0
+      */}
       <div
-        className="relative flex flex-col items-center md:items-start justify-start md:justify-center overflow-hidden md:pl-24 md:pr-12 md:py-0 xl:pl-100 xl:pr-20"
+        className="relative flex flex-col justify-start md:justify-center overflow-hidden
+                   px-4 pt-6 pb-2
+                   md:px-0 md:pl-24 md:pr-12 md:py-0 xl:pl-100 xl:pr-20"
         style={{ flex: 1 }}
       >
         <span
@@ -208,12 +214,7 @@ function Hero() {
           SAM
         </span>
 
-        {/*
-          MOBILE: gecentreerd met px-4 aan beide kanten, max-w zodat het nooit
-          breder is dan de navbar. mx-auto centreert het blok.
-          DESKTOP: geen max-w beperking, desktop layout regelt spacing.
-        */}
-        <div className="w-full max-w-sm mx-auto px-4 md:max-w-none md:mx-0 md:px-0 relative z-10 pt-6 pb-2 md:py-0 md:w-full">
+        <div className="relative z-10 text-center md:text-left w-full max-w-[320px] md:max-w-none mx-auto md:mx-0">
           <span className="inline-block mb-4 px-4 py-1 rounded-full text-xs uppercase tracking-widest text-[#7217E8] border border-[#7217E8]/20 bg-[#7217E8]/10 font-bold">
             Graphic Design Student
           </span>
@@ -223,11 +224,11 @@ function Hero() {
           >
             Hi, I&apos;m Sam <br /> <span className="text-[#7217E8]">Wauters.</span>
           </h1>
-          <div className="w-16 h-1 bg-[#7217E8] rounded-full mb-4" />
-          <p className="text-white/50 font-light text-base md:text-lg leading-relaxed max-w-sm mb-6 italic">
+          <div className="w-16 h-1 bg-[#7217E8] rounded-full mb-4 mx-auto md:mx-0" />
+          <p className="text-white/50 font-light text-base md:text-lg leading-relaxed mb-6 italic">
             Crafting visual identities and digital experiences that feel intentional, bold, and human.
           </p>
-          <div className="flex flex-wrap gap-3 md:gap-4">
+          <div className="flex flex-wrap gap-3 md:gap-4 justify-center md:justify-start">
             <Link href="#projects" className="px-6 md:px-7 py-3 rounded-full bg-[#7217E8] text-white font-medium text-sm hover:opacity-85 transition-opacity">
               View my work
             </Link>
@@ -255,7 +256,7 @@ function Experience() {
       >
         Experience
       </h2>
-      <div className="w-full max-w-sm md:max-w-3xl flex flex-col">
+      <div className="w-full max-w-[320px] md:max-w-3xl flex flex-col mx-auto md:mx-0">
         {EXPERIENCE.map((e, i) => (
           <div
             key={i}
@@ -278,7 +279,7 @@ function Experience() {
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#1E202C] text-white selection:bg-[#7217E8]/30">
+    <main className="min-h-screen bg-[#1E202C] text-white selection:bg-[#7217E8]/30 text-center md:text-left">
       <Hero />
       <MainCarousel />
       <Experience />

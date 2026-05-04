@@ -11,12 +11,10 @@ export default function GlobalNavbar() {
   const [isHoveringNav, setIsHoveringNav] = useState(false)
   const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // ─── SLUIT NAVIGATIE BIJ ROUTE CHANGE ───
   useEffect(() => {
     setIsOpen(false)
   }, [pathname])
 
-  // ─── SCROLL HANDLER ───
   useEffect(() => {
     const handleScroll = () => {
       setIsAtTop(window.scrollY < 10)
@@ -36,14 +34,10 @@ export default function GlobalNavbar() {
     }, 0)
   }
 
-  // --- HELPER FUNCTION FOR SMART SCROLL ---
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (pathname === href) {
       e.preventDefault()
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      })
+      window.scrollTo({ top: 0, behavior: "smooth" })
       setIsOpen(false)
     }
   }
@@ -52,7 +46,6 @@ export default function GlobalNavbar() {
 
   return (
     <>
-      {/* ── BLUR OVERLAY ── */}
       {isOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
@@ -65,10 +58,10 @@ export default function GlobalNavbar() {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* ── DESKTOP PRIMARY NAV (Centered) ── */}
+        {/* ── DESKTOP PRIMARY NAV ── */}
         <nav className="hidden md:flex items-center gap-2 bg-[#1a1a2e] border border-[#3A3D50] rounded-full px-8 py-2 shadow-lg w-auto">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             onClick={(e) => handleNavLinkClick(e, "/")}
             className="text-[#E8ECED] font-bold text-xl mr-12 tracking-tight"
           >
@@ -81,7 +74,7 @@ export default function GlobalNavbar() {
         </nav>
 
         {/* ── DESKTOP SECONDARY NAV ── */}
-        <div 
+        <div
           className="hidden md:flex absolute right-4 lg:right-10 items-center transition-all duration-300"
           style={{
             opacity: showSecondary ? 1 : 0,
@@ -96,25 +89,28 @@ export default function GlobalNavbar() {
           </nav>
         </div>
 
-        {/* ── MOBILE NAV ── */}
-        <div className="flex md:hidden flex-col w-full max-w-sm">
+        {/* ── MOBILE NAV ──
+            max-w-[320px] maakt de nav smaller dan het scherm,
+            waardoor de zijmarges automatisch groter worden via mx-auto (via justify-center op parent)
+        */}
+        <div className="flex md:hidden flex-col w-full max-w-[320px]">
 
-          {/* Mobile toggle bar — Hele bar is nu klikbaar */}
-          <div 
+          {/* Mobile toggle bar */}
+          <div
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center justify-between bg-[#1a1a2e] border border-[#3A3D50] rounded-full px-6 py-3 shadow-lg cursor-pointer select-none"
           >
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               onClick={(e) => {
-                e.stopPropagation(); // Voorkomt dat het menu opent/sluit bij klik op logo
-                handleNavLinkClick(e, "/");
+                e.stopPropagation()
+                handleNavLinkClick(e, "/")
               }}
               className="text-[#E8ECED] font-bold text-xl tracking-tight z-10"
             >
               Sam<span className="text-[#7217E8]">.</span>
             </Link>
-            
+
             <div className="flex flex-col gap-1.5 p-1">
               <span className={`block w-5 h-0.5 bg-[#E8ECED] transition-all duration-300 ${isOpen ? "rotate-45 translate-y-2" : ""}`} />
               <span className={`block w-5 h-0.5 bg-[#E8ECED] transition-all duration-300 ${isOpen ? "opacity-0" : ""}`} />
