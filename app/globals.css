@@ -31,7 +31,6 @@
   --border: #3A3D50;
   --ring: #7217E8;
   --radius: 8px;
-
   --sidebar: #2A2D3A;
   --sidebar-foreground: #E8ECED;
   --sidebar-accent: #7217E8;
@@ -43,7 +42,6 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
   }
-
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -53,18 +51,16 @@
     width: 100%;
     position: relative;
   }
-
   input, textarea, select {
     color: #E8ECED !important;
     background-color: #2A2D3A !important;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     font-size: 16px !important;
-    max-width: 100%;
   }
 }
 
-/* 6. GLOBAL PAGE TRANSITION */
+/* 6. GLOBAL PAGE TRANSITION (The "Level Up") */
 @keyframes slideUpPage {
   from {
     opacity: 0;
@@ -81,16 +77,26 @@
   will-change: transform, opacity;
 }
 
-/* 7. Custom cursor — STRENG Desktop only */
+/* 7. REVEAL ON SCROLL */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 8. Custom cursor — STRENG Desktop only */
 @media (pointer: fine) and (min-width: 1024px) {
   *, html, body {
     cursor: none !important;
   }
-
   a, button, [role="button"], .cursor-pointer, input, select, textarea {
     cursor: none !important;
   }
-
   .cursor-container {
     display: flex;
     position: fixed;
@@ -101,13 +107,7 @@
     pointer-events: none;
     z-index: 999999;
     will-change: transform;
-    align-items: center;
-    justify-content: center;
-    transform: translate3d(
-      calc(var(--mouse-x, 0) * 1px), 
-      calc(var(--mouse-y, 0) * 1px), 
-      0
-    );
+    transform: translate3d(calc(var(--mouse-x, 0) * 1px), calc(var(--mouse-y, 0) * 1px), 0);
     transition: transform 0.02s linear;
   }
 }
@@ -121,52 +121,15 @@
   width: 100%;
   height: 100%;
   fill: var(--accent);
-  transform-origin: top left;
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4));
 }
 
-/* 8. Utilities & Responsiviteit */
-.sidebar {
-  background-color: var(--sidebar);
-  color: var(--sidebar-foreground);
-  padding: 1rem;
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    position: relative;
-  }
-}
-
-.sidebar ul li:hover {
-  background-color: var(--sidebar-accent);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-.bg-gray-50, .bg-gray-100 {
-  background-color: #2A2D3A !important;
-}
-
-.bg-gray-200 {
-  background-color: #3A3D50 !important;
-}
-
+/* 9. Utilities */
 @media (max-width: 640px) {
   .container {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
-    max-width: 100vw;
   }
-
   .grid {
     grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
   }
