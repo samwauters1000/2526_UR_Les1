@@ -69,29 +69,29 @@ const projects = [
     title: "Magazine Design — School Project",
     type: "pdf",
     file: "/images/magazine.pdf",
-    tag: "School Project",
-    description: "Voor dit schoolproject ontwierp ik een volledig magazine van A tot Z. Van de lay-out en typografie tot de beeldkeuze en kleurpalet — alles werd zorgvuldig samengesteld om een coherent en professioneel geheel te vormen.",
+    tag: "Self Magazine Project",
+    description: "For this school project I designed a complete magazine from A to Z. From layout and typography to image selection and color palette — everything was carefully crafted to create a coherent and professional whole. this project was made in 2023 so some of the content is in Dutch. The magazine covers various topics related to design, culture and lifestyle based on my interests, and was created using Adobe InDesign.",
   },
   {
     title: "Poster — Theatre Play",
     type: "image",
     file: "/images/toneel.png",
-    tag: "Graphic Design",
-    description: "Een affiche ontworpen voor een theaterproductie. Het doel was om de sfeer en emotie van het stuk te vangen in één krachtig beeld. Ik experimenteerde met typografie, contrast en compositie.",
+    tag: "Graphic Poster Design",
+    description: "A poster designed for a theatre production. The goal was to capture the atmosphere and emotion of the play in one powerful image. I experimented with typography, contrast and composition. this was made for a school project in 2024.",
   },
   {
     title: "Infographic — De Lijn Etiquette",
     type: "image",
     file: "/images/infographic.png",
     tag: "Visual Narrative",
-    description: "Een infographic over de gedragsregels in het openbaar vervoer van De Lijn. Het uitdagende was het omzetten van droge regelgeving naar een visueel aantrekkelijk verhaal via illustraties en heldere iconen.",
+    description: "An infographic about the rules of conduct in De Lijn public transport. The challenge was translating dry regulations into a visually engaging story through illustrations and clear icons. this was also made to be a parody of the often confusing and sometimes contradictory rules of De Lijn, which is why I took some creative liberties with the content. This was made for a school project in 2026.",
   },
   {
     title: "In the works...",
     type: "image",
-    file: "/images/studio-lux.jpg",
+    file: "/images/comming-soon.jpg",
     tag: "In the works...",
-    description: "Dit project is momenteel in ontwikkeling. Meer details volgen binnenkort. Stay tuned voor updates over dit nieuwe werk.",
+    description: "This project is currently in development. More details will follow soon. Stay tuned for updates on this new work.",
   },
 ];
 
@@ -140,7 +140,7 @@ export default function ProjectsPage() {
             <div className="w-8 h-px bg-primary" />
             <span className="text-xs uppercase tracking-widest text-primary font-bold">Portfolio</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">Project's</h1>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">Projects</h1>
         </header>
 
         {projects.map((project, i) => (
@@ -168,12 +168,9 @@ export default function ProjectsPage() {
                 onClick={() => setOverlay(project.file)} 
                 className="mt-6 flex items-center gap-4 group/btn mx-auto md:mx-0 h-4"
               >
-                {/* De lijn staat nu in een flex container met h-4 en items-center */}
                 <div className="w-8 h-px bg-foreground/30 group-hover/btn:w-12 group-hover/btn:bg-primary transition-all duration-500" />
-                
-                {/* leading-none zorgt dat er geen extra ruimte boven/onder de tekst zit */}
                 <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/40 group-hover/btn:text-foreground transition-colors duration-500 font-bold leading-none inline-flex items-center">
-                  {project.type === "pdf" ? "Navigate with arrows through PDF" : "Click For Full view"}
+                  {project.type === "pdf" ? "Navigate with arrows through PDF" : "Click for full view"}
                 </span>
               </button>
             </div>
