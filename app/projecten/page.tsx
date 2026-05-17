@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 
 function InternalPDFViewer({ file }: { file: string }) {
@@ -64,8 +65,10 @@ const PDFViewer = dynamic(() => Promise.resolve(InternalPDFViewer), {
   loading: () => <div className="text-foreground/20 text-sm italic font-light tracking-widest">Loading PDF...</div>,
 });
 
+// Id's toegevoegd die matchen met de hashtags op de homepage
 const projects = [
   {
+    id: "magazine",
     title: "Magazine Design — School Project",
     type: "pdf",
     file: "/images/magazine.pdf",
@@ -73,6 +76,7 @@ const projects = [
     description: "For this school project I designed a complete magazine from A to Z. From layout and typography to image selection and color palette — everything was carefully crafted to create a coherent and professional whole. this project was made in 2023 so some of the content is in Dutch. The magazine covers various topics related to design, culture and lifestyle based on my interests, and was created using Adobe InDesign.",
   },
   {
+    id: "theatre",
     title: "Poster — Theatre Play",
     type: "image",
     file: "/images/toneel.png",
@@ -80,6 +84,7 @@ const projects = [
     description: "A poster designed for a theatre production. The goal was to capture the atmosphere and emotion of the play in one powerful image. I experimented with typography, contrast and composition. this was made for a school project in 2024.",
   },
   {
+    id: "infographic",
     title: "Infographic — De Lijn Etiquette",
     type: "image",
     file: "/images/infographic.png",
@@ -87,6 +92,7 @@ const projects = [
     description: "An infographic about the rules of conduct in De Lijn public transport. The challenge was translating dry regulations into a visually engaging story through illustrations and clear icons. this was also made to be a parody of the often confusing and sometimes contradictory rules of De Lijn, which is why I took some creative liberties with the content. This was made for a school project in 2026.",
   },
   {
+    id: "studiolux",
     title: "In the works...",
     type: "image",
     file: "/images/comming-soon.jpg",
@@ -98,7 +104,43 @@ const projects = [
 export default function ProjectsPage() {
   const itemsRef = useRef<(HTMLElement | null)[]>([]);
   const [overlay, setOverlay] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const isPDF = overlay?.toLowerCase().endsWith(".pdf");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // GEFIXT: Luistert naar de URL-hash bij binnenkomst en scrollt soepel naar het juiste project
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleScrollToHash = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        // Wacht heel even tot Next.js de DOM stabiel heeft opgebouwd
+        setTimeout(() => {
+          const element = document.querySelector(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 200);
+      }
+    };
+
+    handleScrollToHash();
+  }, [mounted]);
+
+  useEffect(() => {
+    if (overlay) {
+      document.body.style.setProperty("overflow", "hidden", "important");
+    } else {
+      document.body.style.removeProperty("overflow");
+    }
+    return () => {
+      document.body.style.removeProperty("overflow");
+    };
+  }, [overlay]);
 
   useEffect(() => {
     const els = itemsRef.current.filter(Boolean) as HTMLElement[];
@@ -119,20 +161,51 @@ export default function ProjectsPage() {
     return () => observer.disconnect();
   }, []);
 
-  return (
-    <main className="min-h-screen text-foreground bg-background text-center md:text-left">
-      {overlay && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setOverlay(null)}>
-          <div className="relative w-[90vw] h-[85vh] flex items-center justify-center">
+  const renderOverlay = () => {
+    if (!overlay || !mounted) return null;
+
+    return createPortal(
+      <div className="fixed inset-0 w-screen h-screen z-[99999] backdrop-blur-xl bg-black/60 flex items-center justify-center p-6 select-none overflow-hidden md:p-12">
+        <div 
+          className="absolute inset-0 w-full h-full cursor-zoom-out" 
+          onClick={() => setOverlay(null)} 
+        />
+        <div className="relative z-10 max-w-[85vw] max-h-[85vh] flex items-center justify-center">
+          <button 
+            type="button"
+            className="absolute -top-4 -right-4 md:-top-6 md:-right-6 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white text-xl md:text-2xl font-medium bg-accent/90 border border-accent/30 hover:bg-accent rounded-full transition-all duration-300 z-[100010] cursor-pointer shadow-2xl" 
+            onClick={() => setOverlay(null)}
+          >
+            ✕
+          </button>
+          <div 
+            className="w-full h-full flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
             {isPDF ? (
-              <iframe src={`${overlay}#view=FitH`} className="w-full h-full rounded-md shadow-2xl" title="PDF Preview" onClick={(e) => e.stopPropagation()} />
+              <iframe 
+                src={`${overlay}#view=FitH`} 
+                className="w-[85vw] h-[85vh] rounded-md shadow-2xl bg-white border border-neutral-800" 
+                title="PDF Preview" 
+              />
             ) : (
-              <img src={overlay} className="max-w-full max-h-full object-contain shadow-2xl" alt="Preview" onClick={(e) => e.stopPropagation()} />
+              <img 
+                src={overlay} 
+                className="max-w-[85vw] max-h-[85vh] w-auto h-auto object-contain rounded-md shadow-2xl border border-neutral-800" 
+                alt="Preview" 
+              />
             )}
-            <button className="absolute -top-10 right-0 md:-right-10 w-10 h-10 flex items-center justify-center text-white text-3xl font-light hover:text-primary transition-colors" onClick={() => setOverlay(null)}>✕</button>
           </div>
         </div>
-      )}
+      </div>,
+      document.body
+    );
+  };
+
+  return (
+    <main className="min-h-screen text-foreground bg-background text-center md:text-left">
+      
+      {renderOverlay()}
 
       <div className="w-full max-w-[320px] mx-auto px-0 md:max-w-4xl md:px-6 pb-24 flex flex-col gap-16 md:gap-24">
         <header ref={(el) => { itemsRef.current[0] = el; }} className="opacity-0 translate-y-[20px] mb-4">
@@ -146,6 +219,7 @@ export default function ProjectsPage() {
         {projects.map((project, i) => (
           <article
             key={i}
+            id={project.id} // GEFIXT: id gekoppeld voor scroll-to-hash ondersteuning
             ref={(el) => { itemsRef.current[i + 1] = el; }}
             className={`flex flex-col md:flex-row gap-6 md:gap-12 items-center opacity-0 translate-y-[20px] ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}
           >

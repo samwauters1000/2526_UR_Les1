@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
+// De links zijn nu aangepast naar hashtags zodat ze linken naar de juiste sectie op de /projecten pagina
 const PROJECTS = [
-  { title: "Magazine Design", tag: "School Project", image: "/images/magazine-thumb.jpg", link: "/projecten" },
-  { title: "Poster — Theatre Play", tag: "Graphic Design", image: "/images/toneel.png", link: "/projecten" },
-  { title: "Infographic", tag: "Visual Narrative", image: "/images/infographic.png", link: "/projecten" },
-  { title: "In the works...", tag: "Studio Lux", image: "/images/studio-lux.jpg", link: "/projecten" },
+  { title: "Magazine Design", tag: "School Project", image: "/images/magazine-car.png", link: "/projecten#magazine" },
+  { title: "Poster — Theatre Play", tag: "Graphic Design", image: "/images/toneel.png", link: "/projecten#theatre" },
+  { title: "Infographic", tag: "Visual Narrative", image: "/images/infographic.png", link: "/projecten#infographic" },
+  { title: "In the works...", tag: "Studio Lux", image: "/images/studio-lux.jpg", link: "/projecten#studiolux" },
 ]
 
 const EXPERIENCE = [
@@ -66,18 +67,73 @@ function ProjectCard({ project, isActive, onClick }: any) {
 
 function MainCarousel() {
   const [current, setCurrent] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
   const router = useRouter()
   const { ref, visible } = useScrollReveal(0.1)
   const slots = [-2, -1, 0, 1, 2]
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const next = () => setCurrent((c) => wrapIndex(c + 1, PROJECTS.length))
   const prev = () => setCurrent((c) => wrapIndex(c - 1, PROJECTS.length))
 
+  useEffect(() => {
+    if (isPaused) return
+
+    const interval = setInterval(() => {
+      next()
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [isPaused])
+
+  const handleUserInteraction = () => {
+    setIsPaused(true)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    timeoutRef.current = setTimeout(() => {
+      setIsPaused(false)
+    }, 10000)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [])
+
   const handleCardClick = (idx: number) => {
     if (idx === current) {
-      router.push(`/projecten`)
+      router.push(PROJECTS[idx].link)
     } else {
+      handleUserInteraction()
       setCurrent(idx)
+    }
+  }
+
+  const handlePrevClick = () => {
+    handleUserInteraction()
+    prev()
+  }
+
+  const handleNextClick = () => {
+    handleUserInteraction()
+    next()
+  }
+
+  const handleDotClick = (idx: number) => {
+    handleUserInteraction()
+    setCurrent(idx)
+  }
+
+  const handleDragEnd = (event: any, info: any) => {
+    const swipeThreshold = 50
+    const velocityThreshold = 200
+
+    if (info.offset.x < -swipeThreshold || info.velocity.x < -velocityThreshold) {
+      handleNextClick()
+    } else if (info.offset.x > swipeThreshold || info.velocity.x > velocityThreshold) {
+      handlePrevClick()
     }
   }
 
@@ -101,12 +157,13 @@ function MainCarousel() {
         Projects
       </h2>
 
-      <div className="relative w-full max-w-7xl flex items-center justify-center h-[380px] md:h-[600px]">
+      <div className="relative w-full max-w-7xl flex items-center justify-center h-[380px] md:h-[600px] overflow-hidden">
         <AnimatePresence initial={false}>
           {slots.map((slot) => {
             const idx = wrapIndex(current + slot, PROJECTS.length)
             const absSlot = Math.abs(slot)
             const isCenter = slot === 0
+            
             return (
               <motion.div
                 key={`${idx}-${slot}`}
@@ -119,7 +176,11 @@ function MainCarousel() {
                   filter: `blur(${absSlot * 3}px)`,
                 }}
                 transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                className="absolute w-[220px] md:w-[400px] aspect-[4/5]"
+                drag={isCenter ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.7}
+                onDragEnd={handleDragEnd}
+                className="absolute w-[220px] md:w-[400px] aspect-[4/5] touch-pan-y"
                 style={{ pointerEvents: absSlot > 1 ? "none" : "auto" }}
               >
                 <ProjectCard
@@ -135,13 +196,13 @@ function MainCarousel() {
 
       <div className="mt-6 md:mt-16 flex flex-col items-center gap-6 md:gap-8 relative z-20">
         <div className="flex items-center gap-6 md:gap-8">
-          <button onClick={prev} className="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#7217E8] text-[#7217E8] flex items-center justify-center hover:bg-[#7217E8] hover:text-white transition-all shadow-lg active:scale-90 text-xl md:text-2xl">←</button>
+          <button onClick={handlePrevClick} className="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#7217E8] text-[#7217E8] flex items-center justify-center hover:bg-[#7217E8] hover:text-white transition-all shadow-lg active:scale-90 text-xl md:text-2xl">←</button>
           <div className="flex gap-3">
             {PROJECTS.map((_, i) => (
-              <button key={i} onClick={() => setCurrent(i)} className={`h-2.5 rounded-full transition-all duration-500 ${i === current ? "w-10 md:w-12 bg-[#7217E8]" : "w-2.5 bg-[#7217E8]/20"}`} />
+              <button key={i} onClick={() => handleDotClick(i)} className={`h-2.5 rounded-full transition-all duration-500 ${i === current ? "w-10 md:w-12 bg-[#7217E8]" : "w-2.5 bg-[#7217E8]/20"}`} />
             ))}
           </div>
-          <button onClick={next} className="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#7217E8] text-[#7217E8] flex items-center justify-center hover:bg-[#7217E8] hover:text-white transition-all shadow-lg active:scale-90 text-xl md:text-2xl">→</button>
+          <button onClick={handleNextClick} className="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#7217E8] text-[#7217E8] flex items-center justify-center hover:bg-[#7217E8] hover:text-white transition-all shadow-lg active:scale-90 text-xl md:text-2xl">→</button>
         </div>
       </div>
     </section>
@@ -151,11 +212,17 @@ function MainCarousel() {
 function Hero() {
   return (
     <section
-      className="relative flex flex-col md:flex-row pb-4 md:pb-0"
+      className="relative flex flex-col md:flex-row pb-4 md:pb-0 overflow-hidden"
       style={{ minHeight: "auto" }}
     >
-      {/* Mobile profile image — volle breedte, geen padding */}
-      <div className="block md:hidden w-full relative overflow-hidden" style={{ height: "180px" }}>
+      {/* De solide paarse bar achter de foto */}
+      <div 
+        className="absolute left-0 top-1/2 -translate-y-1/2 w-1/2 h-[100px] sm:h-[130px] md:h-[180px] lg:h-[220px] bg-[#7217E8] pointer-events-none"
+        style={{ zIndex: 2 }}
+      />
+
+      {/* Mobiele foto sectie (blijft ongewijzigd gecentreerd) */}
+      <div className="block md:hidden w-full relative overflow-hidden" style={{ height: "140px" }}>
         <div style={{ position: "absolute", inset: 0, background: "rgba(30,32,44,0.25)", zIndex: 1 }} />
         <img
           src="/images/profile.png"
@@ -169,33 +236,39 @@ function Hero() {
             width: "auto",
             objectFit: "contain",
             objectPosition: "bottom",
-            zIndex: 2,
+            zIndex: 4,
           }}
         />
       </div>
 
-      {/* Desktop profile image */}
+      {/* Desktop foto sectie */}
+      {/* GEFIXT: Teruggezet naar 'justify-end' om de rechterkant als basis te pakken en 'overflow-visible' toegevoegd */}
       <div
-        className="hidden md:block"
+        className="hidden md:flex justify-end items-center pr-12 xl:pr-24 overflow-visible"
         style={{
           width: "40%",
           flexShrink: 0,
           position: "relative",
-          backgroundImage: "url('/images/profile.png')",
-          backgroundSize: "70%",
-          backgroundPosition: "110% 30%",
-          backgroundRepeat: "no-repeat",
           minHeight: "calc(100vh - 200px)",
         }}
       >
-        <div style={{ position: "absolute", inset: 0, background: "rgba(30,32,44,0.25)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "rgba(30,32,44,0.25)", pointerEvents: "none", zIndex: 1 }} />
+        {/* GEFIXT: De transform staat nu op een positieve translateX(4cm) in combinatie met een ruimere container, waardoor hij gegarandeerd naar rechts verschuift */}
+        <img 
+          src="/images/profile.png" 
+          alt="Profile"
+          className="object-contain relative animate-none"
+          style={{ 
+            width: "55%",
+            height: "auto",
+            maxHeight: "75vh",
+            zIndex: 4,
+            transform: "translateX(4cm)"
+          }}
+        />
       </div>
 
-      {/* Text content
-          MOBILE: px-4 links en rechts geeft dezelfde marge als de navbar.
-                  De section is flex-col dus de div pakt volle breedte — px-4 is genoeg.
-          DESKTOP: pl-24 zoals origineel, px-4 wordt overschreven door md:px-0
-      */}
+      {/* Tekst inhoud kolom */}
       <div
         className="relative flex flex-col justify-start md:justify-center overflow-hidden
                    px-4 pt-6 pb-2
@@ -208,6 +281,7 @@ function Hero() {
             fontSize: "clamp(4rem, 18vw, 16rem)",
             fontFamily: "var(--font-geist-sans)",
             color: "rgba(114,23,232,0.04)",
+            zIndex: 1,
           }}
           aria-hidden
         >

@@ -25,68 +25,72 @@ const EXPERIENCE = [
 
 export default function About() {
   return (
-    <section className="min-h-screen pb-16 text-gray-300 text-center md:text-left">
-      {/* Mobile: max-w-sm mx-auto px-4 centreert de content met dezelfde marges als de navbar */}
-      <div className="w-full max-w-[320px] mx-auto px-0 md:max-w-5xl md:px-6 md:px-6 lg:px-8 md:pt-8 animate-in fade-in slide-in-from-bottom duration-700">
+    <main>
+      <section className="min-h-screen pb-16 text-center md:text-left">
+        <div className="w-full max-w-[320px] mx-auto px-0 md:max-w-5xl md:px-6 lg:px-8 md:pt-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center mb-16 md:mb-20">
-          <div>
-            <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-accent font-bold bg-accent/15 border border-accent/30 rounded-full px-5 py-2 mb-6 backdrop-blur-md">
-              My Story
-            </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight leading-[1.05] mb-5 text-gray-200">
-              Hi, I'm <span className="text-accent">Sam</span>. <br />
-            </h1>
-            <p className="text-base sm:text-lg leading-relaxed text-gray-400">
-              I am a graphic designer student trying to learn the ins and outs of graphic design & interactive design. As a student designer, I am passionate about creating meaningful and engaging experiences that connect people. I am currently exploring the intersection of physical and digital design, aiming to create projects that enable users to interact with their environment in new, engaging, and efficient ways.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-stretch mb-16 md:mb-20">
+            <div>
+              <span className="inline-block text-[10px] tracking-[0.25em] uppercase text-accent font-bold bg-accent/15 border border-accent/30 rounded-full px-5 py-2 mb-6 backdrop-blur-md">
+                My Story
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight leading-[1.05] mb-5 text-white">
+                Hi, I'm <span className="text-accent">Sam</span>. <br />
+              </h1>
+              {/* GEFIXT: text-sm op mobiel, md:text-base op desktop */}
+              <p className="custom-adjustable-text text-sm md:text-base font-light text-white/80">
+                I am a graphic designer student trying to learn the ins and outs of graphic design & interactive design. As a student designer, I am passionate about creating meaningful and engaging experiences that connect people. I am currently exploring the intersection of physical and digital design, aiming to create projects that enable users to interact with their environment in new, engaging, and efficient ways.
+              </p>
+            </div>
+
+            <div className="relative h-full min-h-[350px] md:min-h-0">
+              <div className="w-full h-full flex items-center justify-center rounded-[24px] border border-white/5 overflow-hidden shadow-2xl bg-card/20">
+                <img
+                  src="/images/profile.png"
+                  alt="Sam Wauters"
+                  className="max-w-[75%] max-h-[75%] w-auto h-auto object-contain grayscale hover:grayscale-0 transition-all duration-700"
+                />
+              </div>
+              <div className="absolute -bottom-4 -left-4 bg-card border border-border rounded-[24px] px-10 py-3 shadow-2xl">
+                <p className="text-2xl font-bold leading-none mb-1 text-white">AP</p>
+                <p className="text-[10px] uppercase tracking-widest text-accent font-bold">University</p>
+              </div>
+            </div>
           </div>
 
-          <div className="relative">
-            <div className="w-full aspect-[4/5] rounded-[24px] border border-white/5 overflow-hidden shadow-2xl">
-              <img
-                src="/images/profile.png"
-                alt="Sam Wauters"
-                className="h-full m-auto object-cover grayscale hover:grayscale-0 transition-all duration-700"
-              />
+          <hr className="border-border/40 mb-12 md:mb-16" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mb-16 md:mb-20">
+            <div>
+              <p className="text-[11px] tracking-[0.25em] uppercase text-accent font-bold mb-6">Skills & Focus</p>
+              <div className="space-y-6">
+                {/* GEFIXT: text-xs op mobiel, md:text-sm op desktop */}
+                <p className="custom-adjustable-text text-xs md:text-sm text-white/70 leading-relaxed">
+                  I am currently actively developing my skills in interactive design, with a focus on creating engaging user experiences. I am particularly interested in exploring how physical and digital elements can be combined to create innovative projects that allow users to interact with their environment in new ways.
+                </p>
+                <p className="custom-adjustable-text text-xs md:text-sm text-white/70 leading-relaxed">
+                  Additionally, I am refining my ability and skill of using design tools such as Figma, Adobe Creative Cloud, and various prototyping software to bring my ideas to life. I am also learning to code in languages such as JavaScript and Next.js, which allows me to create more complex and interactive projects.
+                </p>
+              </div>
             </div>
-            <div className="absolute -bottom-4 -left-4 bg-card border border-border rounded-[24px] px-10 py-3 shadow-2xl">
-              <p className="text-2xl font-bold leading-none mb-1 text-gray-200">AP</p>
-              <p className="text-[10px] uppercase tracking-widest text-accent font-bold">University</p>
+
+            <div>
+              <p className="text-[11px] tracking-[0.25em] uppercase text-accent font-bold mb-6">My Ambitions</p>
+              <div className="space-y-6">
+                {/* GEFIXT: text-xs op mobiel, md:text-sm op desktop */}
+                <p className="custom-adjustable-text text-xs md:text-sm text-white/70 leading-relaxed">
+                  My goal is to continue growing in interactive design. I want to create projects that connect the physical and digital worlds, such as interactive installations that let people look at their environment in a new way. I am also eager to explore how design can be used to create meaningful and engaging experiences that connect people and enhance their interaction with the world around them.
+                </p>
+              </div>
             </div>
           </div>
+
+          <hr className="border-border/40 mb-10" />
+
+          <ExperienceSection />
         </div>
-
-        <hr className="border-border/40 mb-12 md:mb-16" />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mb-16 md:mb-20">
-          <div>
-            <p className="text-[11px] tracking-[0.25em] uppercase text-accent font-bold mb-6">Skills & Focus</p>
-            <div className="space-y-6">
-              <p className="text-sm leading-relaxed text-gray-400">
-                I am currently actively developing my skills in interactive design, with a focus on creating engaging user experiences. I am particularly interested in exploring how physical and digital elements can be combined to create innovative projects that allow users to interact with their environment in new ways.
-              </p>
-              <p className="text-sm leading-relaxed text-gray-400">
-                Additionally, I am refining my ability and skill of using design tools such as Figma, Adobe Creative Cloud, and various prototyping software to bring my ideas to life. I am also learning to code in languages such as JavaScript and Next.js, which allows me to create more complex and interactive projects.
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <p className="text-[11px] tracking-[0.25em] uppercase text-accent font-bold mb-6">My Ambitions</p>
-            <div className="space-y-6">
-              <p className="text-sm leading-relaxed text-gray-400">
-                My goal is to continue growing in interactive design. I want to create projects that connect the physical and digital worlds, such as interactive installations that let people look at their environment in a new way. I am also eager to explore how design can be used to create meaningful and engaging experiences that connect people and enhance their interaction with the world around them.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <hr className="border-border/40 mb-10" />
-
-        <ExperienceSection />
-      </div>
-    </section>
+      </section>
+    </main>
   );
 }
 
@@ -98,7 +102,7 @@ function ExperienceSection() {
         <span className="text-[11px] uppercase tracking-[0.25em] text-accent font-bold">Background</span>
         <div className="w-8 h-px bg-accent/50" />
       </div>
-      <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-10 md:mb-12 text-gray-200 text-center">
+      <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-10 md:mb-12 text-white text-center">
         Experience & Education
       </h2>
       <div className="w-full max-w-sm md:max-w-3xl flex flex-col">
@@ -109,11 +113,13 @@ function ExperienceSection() {
           >
             <div>
               <p className="text-accent text-xs font-bold uppercase tracking-widest">{e.period}</p>
-              <p className="text-gray-400 text-sm mt-1 font-medium">{e.company}</p>
+              {/* GEFIXT: text-xs op mobiel, md:text-sm op desktop */}
+              <p className="custom-adjustable-text text-xs md:text-sm mt-1 font-medium">{e.company}</p>
             </div>
             <div className="mt-1 md:mt-0">
-              <h3 className="text-gray-200 font-semibold text-base md:text-lg mb-1 md:mb-2 group-hover:text-accent transition-colors">{e.role}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{e.desc}</p>
+              <h3 className="text-white font-semibold text-base md:text-lg mb-1 md:mb-2 group-hover:text-accent transition-colors">{e.role}</h3>
+              {/* GEFIXT: text-xs op mobiel, md:text-sm op desktop */}
+              <p className="custom-adjustable-text text-xs md:text-sm leading-relaxed text-white/60">{e.desc}</p>
             </div>
           </div>
         ))}

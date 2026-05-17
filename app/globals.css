@@ -25,14 +25,17 @@
 /* 4. Root variables */
 :root {
   --background: #1E202C;
-  --foreground: #E8ECED;
-  --accent: #7217E8;
+  
+  /* >>> PAS DEZE HEX-CODE AAN OM DE COLOR VAN DE TEKST TE VERANDEREN P TAG <<< */
+  --foreground: #cdcdcd; 
+  
+  --accent: #7d2ce8;
   --primary: #7217E8;
   --border: #3A3D50;
-  --ring: #7217E8;
+  --ring: #7217e8c3;
   --radius: 8px;
   --sidebar: #2A2D3A;
-  --sidebar-foreground: #E8ECED;
+  --sidebar-foreground: #CED4DA;
   --sidebar-accent: #7217E8;
 }
 
@@ -42,6 +45,7 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
   }
+  
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -51,8 +55,15 @@
     width: 100%;
     position: relative;
   }
+
+  /* OPLOSSING: Alleen de content (<main>) slide-up animeren in plaats van de hele body */
+  main {
+    animation: slideUpPage 0.6s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+    will-change: transform, opacity;
+  }
+  
   input, textarea, select {
-    color: #E8ECED !important;
+    color: var(--foreground) !important;
     background-color: #2A2D3A !important;
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -60,11 +71,27 @@
   }
 }
 
-/* 6. GLOBAL PAGE TRANSITION (The "Level Up") */
+/* 6. Custom Global Utilities */
+/* GEFIXT VOOR TAILWIND V4: `:where()` verlaagt de CSS-prioriteit naar 0. 
+   Hierdoor overschrijven inline Tailwind classes zoals `text-xs` of `text-sm` deze regel nu ALTIJD op mobiel. */
+:where(.custom-adjustable-text) {
+  color: var(--foreground);
+  line-height: 1.6;
+  font-size: 0.875rem; /* Kleine basisgrootte voor mobiel */
+}
+
+/* Schakelt automatisch over naar de grotere desktop-maat tenzij je een andere text-class meegeeft */
+@media (min-width: 768px) {
+  :where(.custom-adjustable-text) {
+    font-size: 1.2rem;
+  }
+}
+
+/* 7. GLOBAL PAGE TRANSITION (The "Level Up") */
 @keyframes slideUpPage {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(15px); /* Subtieler gemaakt (was 30px) zodat het niet overdreven springt */
   }
   to {
     opacity: 1;
@@ -72,12 +99,13 @@
   }
 }
 
+/* Behouden als fallback of voor specifieke losse elementen */
 .page-transition-wrapper {
-  animation: slideUpPage 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUpPage 0.6s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
   will-change: transform, opacity;
 }
 
-/* 7. REVEAL ON SCROLL */
+/* 8. REVEAL ON SCROLL */
 .reveal {
   opacity: 0;
   transform: translateY(20px);
@@ -89,7 +117,7 @@
   transform: translateY(0);
 }
 
-/* 8. Custom cursor — STRENG Desktop only */
+/* 9. Custom cursor — STRENG Desktop only */
 @media (pointer: fine) and (min-width: 1024px) {
   *, html, body {
     cursor: none !important;
@@ -124,7 +152,7 @@
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4));
 }
 
-/* 9. Utilities */
+/* 10. Utilities */
 @media (max-width: 640px) {
   .container {
     padding-left: 1rem !important;
