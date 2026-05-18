@@ -215,9 +215,9 @@ function Hero() {
       className="relative flex flex-col md:flex-row pb-4 md:pb-0 overflow-hidden"
       style={{ minHeight: "auto" }}
     >
-      {/* De solide paarse bar achter de foto */}
+      {/* De solide paarse bar achter de foto — Nu verborgen op mobiel via 'hidden md:block' */}
       <div 
-        className="absolute left-0 top-1/2 -translate-y-1/2 w-1/2 h-[100px] sm:h-[130px] md:h-[180px] lg:h-[220px] bg-[#7217E8] pointer-events-none"
+        className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-1/2 h-[100px] sm:h-[130px] md:h-[180px] lg:h-[220px] bg-[#7217E8] pointer-events-none"
         style={{ zIndex: 2 }}
       />
 
